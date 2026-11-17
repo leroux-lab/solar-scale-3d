@@ -81,6 +81,39 @@ html, body {
   color: var(--text-muted);
 }
 
+.mobile-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pill-btn {
+  background: rgba(56, 189, 248, 0.15);
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.pill-btn:hover {
+  background: rgba(56, 189, 248, 0.28);
+  color: white;
+}
+
+.pill-btn.hidden {
+  display: none;
+}
+
+.inspector-panel.collapsed {
+  display: none;
+}
+
 .mode-tabs {
   display: flex;
   gap: 6px;

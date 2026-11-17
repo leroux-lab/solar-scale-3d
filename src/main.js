@@ -40,7 +40,15 @@ function flyCameraTo(posVec, lookVec) {
   camFlight.active = true;
 }
 
+// Automatically steps the camera back on vertical portrait mobile screens so planets fit above the bottom card
+function getMobilePortraitBoost() {
+  const aspect = window.innerWidth / Math.max(window.innerHeight, 1);
+  return aspect < 1.0 ? Math.min(2.1, 1.0 / Math.max(aspect, 0.45)) : 1.0;
+}
+
+let userHasInteracted = false;
 window.addEventListener('pointerdown', (e) => {
+  userHasInteracted = true;
   if (e.target === renderer.domElement) {
     camFlight.active = false;
   }
@@ -374,6 +382,11 @@ function selectBodyInLineup(id, fly = true) {
   const body = BODIES.find((b) => b.id === id);
   if (!body) return;
 
+  // Subtle mobile haptic feedback on tap when supported (only after user interaction)
+  if (fly && userHasInteracted && navigator.vibrate) {
+    try { navigator.vibrate(12); } catch {}
+  }
+
   // Automatically switch between Planetary Stage and Stellar Titan Stage if clicking a hypergiant star vs planet
   const needsStellarTier = id === 'betelgeuse' || id === 'uyscuti';
   if (needsStellarTier && state.lineupTier !== 'stellar') {
@@ -409,10 +422,12 @@ function selectBodyInLineup(id, fly = true) {
       if (sunLineupMesh) sunLineupMesh.visible = true;
     }
     const target = lineupMeshes[id];
-    const dist = Math.max(target.r * 3.1, 3.2);
+    const boost = getMobilePortraitBoost();
+    const dist = Math.max(target.r * 3.1, 3.2) * boost;
+    const yLookOffset = boost > 1.1 ? -target.r * 0.45 : 0;
     flyCameraTo(
       new THREE.Vector3(target.x - dist * 0.12, target.r * 0.55 + 0.4, dist),
-      new THREE.Vector3(target.x, 0, 0)
+      new THREE.Vector3(target.x, yLookOffset, 0)
     );
   }
 }
@@ -535,7 +550,8 @@ function buildCompareScene() {
   document.getElementById('compare-diameter-text').textContent = `${ratioFormatted} ${small.name}s fit across the equator`;
   document.getElementById('compare-volume-text').textContent = `By 3D volume, ${volFormatted} ${small.name}s fit inside ${large.name}! (${large.name} = ${large.metaphors[state.metaphor]} when Earth is a ${state.metaphor}).`;
 
-  flyCameraTo(new THREE.Vector3(-1.5, 2.0, 27), new THREE.Vector3(-1.5, 0, 0));
+  const boost = getMobilePortraitBoost();
+  flyCameraTo(new THREE.Vector3(-1.5, 2.0, 27 * boost), new THREE.Vector3(-1.5, boost > 1.1 ? -3.0 : 0, 0));
 }
 
 // ============================================================================
@@ -968,6 +984,50 @@ async function handleExportJson() {
 
 document.getElementById('btn-save-png')?.addEventListener('click', handleSaveScreenshot);
 document.getElementById('btn-export-json')?.addEventListener('click', handleExportJson);
+
+// ============================================================================
+// Stage 3: Mobile Controls Toggle, PWA Install Prompt & Offline Service Worker
+// ============================================================================
+const inspectorPanel = document.getElementById('inspector-panel');
+const btnTogglePanel = document.getElementById('btn-toggle-panel');
+
+btnTogglePanel?.addEventListener('click', () => {
+  const isCollapsed = inspectorPanel.classList.toggle('collapsed');
+  btnTogglePanel.textContent = isCollapsed ? '🎛️ Show Controls' : '🎛️ Hide Controls';
+});
+
+let deferredInstallPrompt = null;
+const btnInstallPwa = document.getElementById('btn-install-pwa');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  btnInstallPwa?.classList.remove('hidden');
+});
+
+btnInstallPwa?.addEventListener('click', async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    btnInstallPwa.classList.add('hidden');
+  } else {
+    showStatus('On iOS/Android: Tap Share / Menu → "Add to Home Screen"!');
+  }
+});
+
+if ('serviceWorker' in navigator && !window.desktopAPI?.isDesktop) {
+  const registerSw = () => {
+    navigator.serviceWorker.register('./sw.js').catch((err) => {
+      console.warn('Service worker registration skipped:', err);
+    });
+  };
+  if (document.readyState === 'complete') {
+    registerSw();
+  } else {
+    window.addEventListener('load', registerSw);
+  }
+}
 
 if (window.desktopAPI && window.desktopAPI.onMenuAction) {
   window.desktopAPI.onMenuAction((action) => {
