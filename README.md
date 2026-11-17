@@ -1,6 +1,9 @@
 # 🪐 Cosmic Scale Studio 3D (`solar-scale-3d`)
 
-An interactive **3D Solar System, Exoplanet & Hypergiant Star Scale Visualizer** built with **Three.js** that makes astronomical sizes and distances conceivable to the human mind.
+🔗 **Live Web App:** [https://leroux-lab.github.io/solar-scale-3d/](https://leroux-lab.github.io/solar-scale-3d/)  
+📦 **GitHub Repository:** [https://github.com/leroux-lab/solar-scale-3d](https://github.com/leroux-lab/solar-scale-3d)
+
+An interactive **3D Solar System, Exoplanet & Hypergiant Star Scale Visualizer** built with **Three.js** and **Electron** that makes astronomical sizes and distances conceivable to the human mind.
 
 ## ✨ Three Interactive Perspective Modes
 1. **Everyday Object Lineup ("If Earth Were a..."):**

@@ -1,5 +1,9 @@
 # 📓 Project Engineering Notebook: Cosmic Scale Studio 3D (`solar-scale-3d`)
 
+- **GitHub Profile:** [@leroux-lab](https://github.com/leroux-lab)
+- **Repository:** [https://github.com/leroux-lab/solar-scale-3d](https://github.com/leroux-lab/solar-scale-3d)
+- **Live GitHub Pages App:** [https://leroux-lab.github.io/solar-scale-3d/](https://leroux-lab.github.io/solar-scale-3d/)
+
 > **How to Use This Notebook Most Efficiently:**
 > A great software engineering notebook is your **"External Brain"** and **Single Source of Truth**. Whenever you pause work or switch platforms (Web → Desktop → Mobile), you can read this document in 2 minutes and immediately know **how the math works**, **why the code is structured this way**, **which commands to run**, and **what step comes next**.
 
