@@ -348,6 +348,24 @@ select {
   color: var(--accent);
 }
 
+/* Desktop / Export Toolbar */
+.desktop-toolbar {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.desktop-status {
+  font-size: 0.72rem;
+  color: #4ade80;
+  text-align: center;
+  min-height: 15px;
+  word-break: break-all;
+}
+
 /* Bottom Planet Dock */
 .planet-dock {
   position: fixed;

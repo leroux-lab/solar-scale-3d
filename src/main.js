@@ -16,7 +16,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 8, 36);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 container.appendChild(renderer.domElement);
@@ -896,6 +896,88 @@ buildLineupScene();
 buildCompareScene();
 buildDistanceScene();
 setMode('lineup');
+
+// ============================================================================
+// Desktop (Electron IPC) & Web Export Handlers
+// ============================================================================
+const desktopStatusEl = document.getElementById('desktop-status');
+
+function showStatus(msg) {
+  if (!desktopStatusEl) return;
+  desktopStatusEl.textContent = msg;
+  setTimeout(() => {
+    if (desktopStatusEl.textContent === msg) desktopStatusEl.textContent = '';
+  }, 4000);
+}
+
+async function handleSaveScreenshot() {
+  renderer.render(scene, camera);
+  const dataUrl = renderer.domElement.toDataURL('image/png');
+  const defaultName = `cosmic-scale-${state.mode}-${state.selectedBodyId}.png`;
+
+  if (window.desktopAPI && window.desktopAPI.isDesktop) {
+    const res = await window.desktopAPI.saveScreenshot(dataUrl, defaultName);
+    if (res && res.saved) {
+      showStatus(`Saved PNG to disk!`);
+    }
+  } else {
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = defaultName;
+    a.click();
+    showStatus('Downloaded 3D Snapshot PNG!');
+  }
+}
+
+async function handleExportJson() {
+  const selected = BODIES.find((b) => b.id === state.selectedBodyId);
+  const reportObj = {
+    app: 'Cosmic Scale Studio 3D',
+    timestamp: new Date().toISOString(),
+    activeMode: state.mode,
+    referenceMetaphor: state.metaphor,
+    selectedBody: selected,
+    comparison: {
+      smallerWorld: state.compareAId,
+      targetWorld: state.compareBId,
+      subMode: state.compareSubMode,
+    },
+    footballFieldJourney: {
+      currentYards: state.journeyYards,
+      vehicleSpeed: state.speedMode,
+    },
+  };
+  const defaultName = `cosmic-scale-report-${state.selectedBodyId}.json`;
+
+  if (window.desktopAPI && window.desktopAPI.isDesktop) {
+    const res = await window.desktopAPI.exportScaleReport(reportObj, defaultName);
+    if (res && res.saved) {
+      showStatus(`Saved JSON Report to disk!`);
+    }
+  } else {
+    const blob = new Blob([JSON.stringify(reportObj, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = defaultName;
+    a.click();
+    URL.revokeObjectURL(url);
+    showStatus('Downloaded Scale Report JSON!');
+  }
+}
+
+document.getElementById('btn-save-png')?.addEventListener('click', handleSaveScreenshot);
+document.getElementById('btn-export-json')?.addEventListener('click', handleExportJson);
+
+if (window.desktopAPI && window.desktopAPI.onMenuAction) {
+  window.desktopAPI.onMenuAction((action) => {
+    if (action === 'save-png') handleSaveScreenshot();
+    else if (action === 'export-json') handleExportJson();
+    else if (action === 'mode-lineup') setMode('lineup');
+    else if (action === 'mode-compare') setMode('compare');
+    else if (action === 'mode-distance') setMode('distance');
+  });
+}
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
