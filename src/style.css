@@ -114,6 +114,74 @@ html, body {
   display: none;
 }
 
+/* Pull-Down Sheet Handle at Top of Control Menu */
+.panel-sheet-handle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px 10px 10px;
+  margin: -6px -6px 10px -6px;
+  border-bottom: 1px solid var(--panel-border);
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+  border-radius: 14px 14px 0 0;
+  transition: background 0.15s ease;
+}
+
+.panel-sheet-handle:hover {
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.sheet-pill {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.48);
+  transition: background 0.15s ease, width 0.15s ease;
+}
+
+.panel-sheet-handle:hover .sheet-pill,
+.panel-sheet-handle:active .sheet-pill {
+  background: var(--accent);
+  width: 54px;
+}
+
+.sheet-handle-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.sheet-handle-title {
+  color: var(--text-main);
+}
+
+.sheet-chevron {
+  color: var(--accent);
+  font-size: 0.72rem;
+  background: rgba(56, 189, 248, 0.14);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.inspector-panel {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+}
+
+.inspector-panel.minimized .inspector-body {
+  display: none;
+}
+
+.inspector-panel.minimized .panel-sheet-handle {
+  margin-bottom: -6px;
+  border-bottom: none;
+}
+
 .mode-tabs {
   display: flex;
   gap: 6px;

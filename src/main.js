@@ -986,15 +986,88 @@ document.getElementById('btn-save-png')?.addEventListener('click', handleSaveScr
 document.getElementById('btn-export-json')?.addEventListener('click', handleExportJson);
 
 // ============================================================================
-// Stage 3: Mobile Controls Toggle, PWA Install Prompt & Offline Service Worker
+// Stage 3: Mobile Controls Pull-Down Sheet, PWA Install & Offline Service Worker
 // ============================================================================
 const inspectorPanel = document.getElementById('inspector-panel');
 const btnTogglePanel = document.getElementById('btn-toggle-panel');
+const panelDragHandle = document.getElementById('panel-drag-handle');
+const sheetChevron = document.getElementById('sheet-chevron');
+
+function setPanelMinimized(minimized) {
+  if (!inspectorPanel) return;
+  inspectorPanel.classList.remove('collapsed');
+  inspectorPanel.classList.toggle('minimized', minimized);
+  inspectorPanel.style.transform = '';
+  if (sheetChevron) {
+    sheetChevron.textContent = minimized ? '▲ Tap or Pull Up to Show' : '▼ Pull Down to Hide';
+  }
+  if (btnTogglePanel) {
+    btnTogglePanel.textContent = minimized ? '🎛️ Show Controls' : '🎛️ Hide Controls';
+  }
+}
 
 btnTogglePanel?.addEventListener('click', () => {
-  const isCollapsed = inspectorPanel.classList.toggle('collapsed');
-  btnTogglePanel.textContent = isCollapsed ? '🎛️ Show Controls' : '🎛️ Hide Controls';
+  const isMin = inspectorPanel.classList.contains('minimized');
+  setPanelMinimized(!isMin);
 });
+
+// Touch / Pointer Drag-Down & Tap Gesture on the Top Handle of the Control Menu
+let sheetDrag = {
+  active: false,
+  startY: 0,
+  currentDeltaY: 0,
+  pointerId: null,
+};
+
+panelDragHandle?.addEventListener('pointerdown', (e) => {
+  sheetDrag.active = true;
+  sheetDrag.startY = e.clientY;
+  sheetDrag.currentDeltaY = 0;
+  sheetDrag.pointerId = e.pointerId;
+  inspectorPanel.style.transition = 'none';
+  panelDragHandle.setPointerCapture?.(e.pointerId);
+});
+
+panelDragHandle?.addEventListener('pointermove', (e) => {
+  if (!sheetDrag.active || e.pointerId !== sheetDrag.pointerId) return;
+  const dy = e.clientY - sheetDrag.startY;
+  sheetDrag.currentDeltaY = dy;
+  const isMin = inspectorPanel.classList.contains('minimized');
+
+  if (!isMin && dy > 0) {
+    // Follow finger downward while pulling down the expanded menu
+    inspectorPanel.style.transform = `translateY(${Math.min(dy, 320)}px)`;
+  } else if (isMin && dy < 0) {
+    // Follow finger upward while pulling up the minimized bar
+    inspectorPanel.style.transform = `translateY(${Math.max(dy, -120)}px)`;
+  }
+});
+
+function finishSheetDrag(e) {
+  if (!sheetDrag.active) return;
+  sheetDrag.active = false;
+  inspectorPanel.style.transition = '';
+
+  const dy = sheetDrag.currentDeltaY;
+  const isMin = inspectorPanel.classList.contains('minimized');
+
+  if (Math.abs(dy) < 10) {
+    // Simple tap/click on the top handle toggles the menu
+    setPanelMinimized(!isMin);
+  } else if (!isMin && dy > 32) {
+    // Pulled down -> minimize to bottom
+    setPanelMinimized(true);
+  } else if (isMin && dy < -25) {
+    // Pulled up -> expand menu
+    setPanelMinimized(false);
+  } else {
+    // Snap back to current state
+    setPanelMinimized(isMin);
+  }
+}
+
+panelDragHandle?.addEventListener('pointerup', finishSheetDrag);
+panelDragHandle?.addEventListener('pointercancel', finishSheetDrag);
 
 let deferredInstallPrompt = null;
 const btnInstallPwa = document.getElementById('btn-install-pwa');
