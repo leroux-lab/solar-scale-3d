@@ -1,0 +1,10 @@
+{
+  "name": "Cosmic Scale Studio 3D",
+  "short_name": "SolarScale3D",
+  "description": "Interactive 3D Solar System Scale Comparison & Perspective Visualizer",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#05070f",
+  "theme_color": "#05070f",
+  "orientation": "any"
+}
