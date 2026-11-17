@@ -47,12 +47,14 @@ Maps the distance from **The Sun (0 km)** to **Neptune (4,495 Million km)** onto
 - [x] Dwarf Planets (*Ceres*, *Pluto*), Exoplanets (*Kepler-22b*, *WASP-17b*), Hypergiant Stars (*Betelgeuse*, *UY Scuti*)
 - [x] Published to GitHub & GitHub Pages
 
-### Stage 2: Desktop Application (Electron)
-- [ ] Install Node.js LTS & Electron dependencies
-- [ ] Create `electron/main.cjs` & `electron/preload.cjs`
-- [ ] Add Native Desktop Features (Save 3D Screenshot PNG to Disk & Export/Import Custom Worlds)
-- [ ] Build Windows `.exe` package & publish to GitHub Releases
+### Stage 2: Desktop Application (Electron) — *COMPLETED*
+- [x] Install Node.js LTS & Electron dependencies
+- [x] Create `electron/main.cjs` & `electron/preload.cjs`
+- [x] Add Native Desktop Features (Save 3D Screenshot PNG to Disk & Export Scale Report JSON)
+- [x] Build Windows `.exe` package (`dist/CosmicScaleStudio3D-win32-x64/CosmicScaleStudio3D.exe`) & distributable ZIP (`dist/CosmicScaleStudio3D-Windows-x64.zip`) via `scripts/package-win.cjs`
 
-### Stage 3: Mobile Application (PWA & Capacitor)
-- [ ] Add Service Worker (`sw.js`) & offline caching for mobile Home Screen installation
-- [ ] Add Capacitor config (`capacitor.config.json`) for native Android/iOS packaging
+### Stage 3: Mobile Application (PWA & Capacitor) — *COMPLETED*
+- [x] Generate `192x192`, `512x512`, and SVG mobile app icons in `icons/` and link in `manifest.json`
+- [x] Add Service Worker (`sw.js`) & offline caching for iOS / Android Home Screen installation
+- [x] Add mobile collapsible `🎛️ Controls` button (`#btn-toggle-panel`) & haptic feedback
+- [x] Add Capacitor config (`capacitor.config.json`) and offline `www/` bundler (`scripts/prepare-mobile-www.cjs`)

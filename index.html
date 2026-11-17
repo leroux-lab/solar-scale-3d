@@ -2,10 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#05070f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CosmicScale3D" />
     <title>Cosmic Scale Studio 3D — Planets, Exoplanets &amp; Hypergiant Stars</title>
     <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
     <link rel="stylesheet" href="./src/style.css" />
     <script type="importmap">
       {
@@ -26,6 +31,14 @@
         <div>
           <h1>Cosmic Scale <span>3D</span></h1>
           <p class="subtitle">Dwarfs • Planets • Exoplanets • Hypergiants</p>
+        </div>
+        <div class="mobile-top-actions">
+          <button class="pill-btn hidden" id="btn-install-pwa" title="Install App to Home Screen">
+            📲 Install
+          </button>
+          <button class="pill-btn" id="btn-toggle-panel" title="Toggle Inspector Panel">
+            🎛️ Controls
+          </button>
         </div>
       </div>
 
