@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cosmic-scale-3d-v2';
+const CACHE_NAME = 'cosmic-scale-3d-v3';
 const CORE_ASSETS = [
   './',
   './index.html',

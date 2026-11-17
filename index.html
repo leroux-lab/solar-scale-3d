@@ -55,9 +55,19 @@
       </nav>
     </header>
 
-    <!-- Right-side Perspective Control & Fact Card -->
+    <!-- Right-side / Mobile Bottom Sheet Perspective Control & Fact Card -->
     <aside class="inspector-panel" id="inspector-panel">
-      <!-- MODE 1 CONTROLS: Everyday Object Lineup -->
+      <!-- Pull-Down / Tap Handle at the Top of the Control Menu -->
+      <div class="panel-sheet-handle" id="panel-drag-handle" role="button" tabindex="0" title="Swipe down or tap to hide/show controls">
+        <div class="sheet-pill"></div>
+        <div class="sheet-handle-row">
+          <span class="sheet-handle-title" id="sheet-handle-title">🪐 Controls &amp; Scale Details</span>
+          <span class="sheet-chevron" id="sheet-chevron">▼ Pull Down to Hide</span>
+        </div>
+      </div>
+
+      <div class="inspector-body" id="inspector-body">
+        <!-- MODE 1 CONTROLS: Everyday Object Lineup -->
       <div class="mode-panel" id="panel-lineup">
         <div class="section-header">
           <span class="badge">TRUE 1:1 DIAMETER</span>
@@ -219,6 +229,7 @@
           </button>
         </div>
         <div class="desktop-status" id="desktop-status"></div>
+      </div>
       </div>
     </aside>
 
