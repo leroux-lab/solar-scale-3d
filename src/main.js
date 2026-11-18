@@ -929,7 +929,7 @@ function showStatus(msg) {
 async function handleSaveScreenshot() {
   renderer.render(scene, camera);
   const dataUrl = renderer.domElement.toDataURL('image/png');
-  const defaultName = `cosmic-scale-${state.mode}-${state.selectedBodyId}.png`;
+  const defaultName = `solar-scale-${state.mode}-${state.selectedBodyId}.png`;
 
   if (window.desktopAPI && window.desktopAPI.isDesktop) {
     const res = await window.desktopAPI.saveScreenshot(dataUrl, defaultName);
@@ -948,7 +948,7 @@ async function handleSaveScreenshot() {
 async function handleExportJson() {
   const selected = BODIES.find((b) => b.id === state.selectedBodyId);
   const reportObj = {
-    app: 'Cosmic Scale Studio 3D',
+    app: 'Solar Scale 3D',
     timestamp: new Date().toISOString(),
     activeMode: state.mode,
     referenceMetaphor: state.metaphor,
@@ -963,7 +963,7 @@ async function handleExportJson() {
       vehicleSpeed: state.speedMode,
     },
   };
-  const defaultName = `cosmic-scale-report-${state.selectedBodyId}.json`;
+  const defaultName = `solar-scale-report-${state.selectedBodyId}.json`;
 
   if (window.desktopAPI && window.desktopAPI.isDesktop) {
     const res = await window.desktopAPI.exportScaleReport(reportObj, defaultName);

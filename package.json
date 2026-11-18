@@ -1,7 +1,7 @@
 {
   "name": "solar-scale-3d",
   "version": "1.0.0",
-  "description": "Cosmic Scale Studio 3D — Interactive Solar System, Exoplanet & Star Scale Visualizer for Web, Desktop (Electron), and Mobile",
+  "description": "Solar Scale 3D — Interactive Solar System, Exoplanet & Star Scale Visualizer for Web, Desktop (Electron), and Mobile",
   "main": "electron/main.cjs",
   "author": "leroux-lab",
   "homepage": "https://leroux-lab.github.io/solar-scale-3d/",
@@ -14,7 +14,8 @@
     "start": "electron .",
     "dev": "vite",
     "build": "vite build",
-    "dist": "electron-builder --win portable"
+    "dist": "node scripts/package-win.cjs",
+    "mobile:prep": "node scripts/prepare-mobile-www.cjs"
   },
   "dependencies": {
     "three": "^0.170.0"
@@ -26,7 +27,7 @@
   },
   "build": {
     "appId": "com.lerouxlab.solarscale3d",
-    "productName": "CosmicScaleStudio3D",
+    "productName": "SolarScale",
     "files": [
       "index.html",
       "manifest.json",

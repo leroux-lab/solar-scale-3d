@@ -1,0 +1,9 @@
+{
+  "appId": "com.lerouxlab.solarscale3d",
+  "appName": "Solar Scale 3D",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

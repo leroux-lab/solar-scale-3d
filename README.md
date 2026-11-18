@@ -1,4 +1,4 @@
-# 🪐 Cosmic Scale Studio 3D (`solar-scale-3d`)
+# 🪐 Solar Scale 3D (`solar-scale-3d`)
 
 🔗 **Live Web App:** [https://leroux-lab.github.io/solar-scale-3d/](https://leroux-lab.github.io/solar-scale-3d/)  
 📦 **GitHub Repository:** [https://github.com/leroux-lab/solar-scale-3d](https://github.com/leroux-lab/solar-scale-3d)
