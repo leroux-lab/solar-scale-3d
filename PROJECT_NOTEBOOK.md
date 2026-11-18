@@ -4,6 +4,7 @@
 - **GitHub Repository:** [https://github.com/leroux-lab/solar-scale-3d](https://github.com/leroux-lab/solar-scale-3d)
 - **Live Web & Mobile PWA URL:** [https://leroux-lab.github.io/solar-scale-3d/](https://leroux-lab.github.io/solar-scale-3d/)
 - **Project Workspace:** `C:\Users\NJler\.gemini\antigravity\scratch\solar-scale-3d`
+- **Master Portfolio Tracker:** [MASTER_PORTFOLIO_NOTEBOOK.md](file:///C:/Users/NJler/.gemini/antigravity/scratch/MASTER_PORTFOLIO_NOTEBOOK.md)
 
 ---
 
@@ -99,3 +100,4 @@ npm run mobile:prep
 - **Lesson 01 (Windows `.bat` Trailing Backslash Quote Escape):** In Windows `.bat` files, `%~dp0` ends with `\`, so `"%~dp0"` produces `\"` which escapes the closing quote in `electron.exe`. Always `cd /d "%~dp0"` first and pass `.` as the directory argument.
 - **Lesson 02 (`ELECTRON_RUN_AS_NODE` in Electron IDEs):** Clear `set ELECTRON_RUN_AS_NODE=` before launching `electron.exe` from child terminals.
 - **Lesson 03 (Mobile Gesture & Service Worker Timing):** Guard `navigator.vibrate(12)` behind a `userHasInteracted` flag set on `pointerdown`, and check `if (document.readyState === 'complete')` when registering `sw.js` inside deferred ES modules.
+- **Lesson 04 (iOS/iPadOS Standalone PWA Top Blur & Safe Areas):** Use `<meta name="apple-mobile-web-app-status-bar-style" content="black" />` instead of `black-translucent` so iOS does not draw a blurred status-bar scrim over `.top-bar`, and apply `env(safe-area-inset-top/bottom/left/right)` plus `-webkit-backdrop-filter` to `.top-bar`, `.inspector-panel`, and `.planet-dock`.
