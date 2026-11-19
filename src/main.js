@@ -279,33 +279,33 @@ function createBodyMesh(body, radius, isTranslucent = false) {
 
 function createLabelSprite(text, subtext = '', color = '#38bdf8', scale = 4) {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
+  canvas.width = 640;
   canvas.height = 160;
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = 'rgba(10, 14, 26, 0.82)';
+  ctx.fillStyle = 'rgba(10, 14, 26, 0.84)';
   ctx.strokeStyle = color;
   ctx.lineWidth = 3.5;
   ctx.beginPath();
-  ctx.roundRect(16, 16, 480, 128, 24);
+  ctx.roundRect(16, 16, 608, 128, 24);
   ctx.fill();
   ctx.stroke();
 
   ctx.fillStyle = '#f8fafc';
-  ctx.font = 'bold 40px system-ui, sans-serif';
+  ctx.font = 'bold 38px system-ui, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(text, 256, subtext ? 72 : 94);
+  ctx.fillText(text, 320, subtext ? 72 : 94, 568);
 
   if (subtext) {
     ctx.fillStyle = color;
-    ctx.font = '600 28px system-ui, sans-serif';
-    ctx.fillText(subtext, 256, 118);
+    ctx.font = '600 26px system-ui, sans-serif';
+    ctx.fillText(subtext, 320, 118, 568);
   }
 
   const tex = new THREE.CanvasTexture(canvas);
   const mat = new THREE.SpriteMaterial({ map: tex, depthTest: false });
   const sprite = new THREE.Sprite(mat);
-  sprite.scale.set(scale, scale * (160 / 512), 1);
+  sprite.scale.set(scale * 1.15, scale * 1.15 * (160 / 640), 1);
   return sprite;
 }
 
@@ -333,7 +333,8 @@ const state = {
   showScaleRuler: true,
   compareAId: 'earth',
   compareBId: 'jupiter',
-  compareView: 'side', // 'side' | 'concentric'
+  compareView: 'side', // 'side' | 'concentric' | 'volume'
+  volumeFill: 100,
   hudHidden: false,
 };
 
@@ -618,13 +619,75 @@ function selectBodyInLineup(id, fly = true) {
 }
 
 // ============================================================================
-// 5. MODE 2: Size & Scale Comparison (Side-by-Side & Concentric Overlay)
+// 5. MODE 2: Size & Scale Comparison (Side-by-Side, Concentric & Volume Fit)
 // ============================================================================
 let compareMeshes = [];
+let volumeInstancedMesh = null;
+let volumeTotalCount = 0;
+
+function generatePackedPositions(shellR, sphereR, maxCount = 1000) {
+  const usableR = Math.max(shellR - sphereR * 1.05, 0);
+  if (usableR < sphereR * 0.2) {
+    return [new THREE.Vector3(0, 0, 0)];
+  }
+
+  const d = sphereR * 2.02; // slight spacing for visual clarity
+  const dy = d * Math.sqrt(2 / 3);
+  const dz = d * (Math.sqrt(3) / 2);
+  const pts = [];
+
+  const maxLayers = Math.ceil(usableR / dy);
+  for (let ly = -maxLayers; ly <= maxLayers; ly++) {
+    const y = ly * dy;
+    if (Math.abs(y) > usableR) continue;
+    const layerR = Math.sqrt(Math.max(0, usableR * usableR - y * y));
+    const maxRows = Math.ceil(layerR / dz);
+    const yOffsetX = Math.abs(ly) % 2 === 1 ? d * 0.5 : 0;
+    const yOffsetZ = Math.abs(ly) % 2 === 1 ? dz / 3 : 0;
+
+    for (let lz = -maxRows; lz <= maxRows; lz++) {
+      const z = lz * dz + yOffsetZ;
+      if (z * z + y * y > usableR * usableR) continue;
+      const rowOffsetX = Math.abs(lz) % 2 === 1 ? d * 0.5 : 0;
+      const maxCols = Math.ceil(layerR / d);
+
+      for (let lx = -maxCols; lx <= maxCols; lx++) {
+        const x = lx * d + rowOffsetX + yOffsetX;
+        if (x * x + y * y + z * z <= usableR * usableR) {
+          pts.push(new THREE.Vector3(x, y, z));
+        }
+      }
+    }
+  }
+
+  // Sort bottom-to-top so the Fill Level slider pours cleanly from the bottom pole upward
+  pts.sort((a, b) => a.y - b.y || (a.x * a.x + a.z * a.z) - (b.x * b.x + b.z * b.z));
+
+  if (pts.length > maxCount) {
+    // Evenly subsample across height so 0%->100% fill still spans the full sphere
+    const step = pts.length / maxCount;
+    const sampled = [];
+    for (let i = 0; i < maxCount; i++) {
+      sampled.push(pts[Math.floor(i * step)]);
+    }
+    return sampled;
+  }
+  return pts.length > 0 ? pts : [new THREE.Vector3(0, 0, 0)];
+}
+
+function updateVolumeFill() {
+  const valEl = document.getElementById('volume-fill-val');
+  if (valEl) valEl.textContent = `${state.volumeFill}%`;
+  if (volumeInstancedMesh) {
+    volumeInstancedMesh.count = Math.round((state.volumeFill / 100) * volumeTotalCount);
+  }
+}
 
 function buildCompareScene() {
   compareGroup.clear();
   compareMeshes = [];
+  volumeInstancedMesh = null;
+  volumeTotalCount = 0;
 
   const bodyA = BODIES.find((b) => b.id === state.compareAId);
   const bodyB = BODIES.find((b) => b.id === state.compareBId);
@@ -637,6 +700,8 @@ function buildCompareScene() {
   const ratio = large.earthRatio / small.earthRatio;
   const smallVisualR = Math.max(largeVisualR / ratio, 0.08);
   const areaRatio = ratio * ratio;
+  const volumeRatio = ratio * ratio * ratio;
+  const packedEstimate = Math.max(1, Math.floor(volumeRatio * 0.74));
   const massRatio = large.massEarths / Math.max(small.massEarths, 1e-6);
 
   // Radial blueprint grid underneath
@@ -684,7 +749,7 @@ function buildCompareScene() {
     const ratioBadge = createLabelSprite(`${ratio.toFixed(2)}× Wider`, `${small.name} → ${large.name}`, '#38bdf8', 5.2);
     ratioBadge.position.set(0, -largeVisualR - 0.1, 3.5);
     compareGroup.add(ratioBadge);
-  } else {
+  } else if (state.compareView === 'concentric') {
     // Concentric / Silhouette Overlay
     const largeMesh = createBodyMesh(large, largeVisualR, false);
     largeMesh.position.set(0, 0, 0);
@@ -720,21 +785,117 @@ function buildCompareScene() {
     );
     centerLabel.position.set(0, largeVisualR + 2.5, 0);
     compareGroup.add(centerLabel);
+  } else {
+    // Volume Fit ("How Many Fit Inside?") — Fresnel Glass Shell + GPU Instanced HCP Lattice
+    const shellGroup = new THREE.Group();
+
+    // Translucent glass shell
+    const glassGeo = new THREE.SphereGeometry(largeVisualR, 64, 48);
+    const glassMat = new THREE.MeshStandardMaterial({
+      map: mapsCache[large.id].map,
+      transparent: true,
+      opacity: 0.16,
+      roughness: 0.18,
+      metalness: 0.1,
+      depthWrite: false,
+    });
+    shellGroup.add(new THREE.Mesh(glassGeo, glassMat));
+
+    // Glowing Fresnel atmosphere rim
+    shellGroup.add(
+      createAtmosphereHalo(largeVisualR, large.atmosphereColor || large.color, 0.88)
+    );
+
+    // Subtle equator & meridian wireframe arcs for glass architectural depth
+    const arcMat = new THREE.LineBasicMaterial({
+      color: large.color,
+      transparent: true,
+      opacity: 0.35,
+    });
+    const makeCircle = (axis) => {
+      const pts = [];
+      for (let i = 0; i <= 96; i++) {
+        const a = (i / 96) * Math.PI * 2;
+        if (axis === 'eq') pts.push(new THREE.Vector3(Math.cos(a) * largeVisualR, 0, Math.sin(a) * largeVisualR));
+        else pts.push(new THREE.Vector3(Math.cos(a) * largeVisualR, Math.sin(a) * largeVisualR, 0));
+      }
+      return new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), arcMat);
+    };
+    shellGroup.add(makeCircle('eq'));
+    shellGroup.add(makeCircle('meridian'));
+
+    // Packed miniature spheres inside the shell
+    const packedSphereR = Math.max(smallVisualR, 0.26);
+    const positions = generatePackedPositions(largeVisualR * 0.96, packedSphereR, 1000);
+    volumeTotalCount = positions.length;
+
+    const miniGeo = new THREE.SphereGeometry(packedSphereR, 20, 14);
+    const miniMat =
+      small.category === 'star'
+        ? new THREE.MeshBasicMaterial({ map: mapsCache[small.id].map })
+        : new THREE.MeshStandardMaterial({
+            map: mapsCache[small.id].map,
+            roughness: 0.55,
+            metalness: 0.08,
+          });
+
+    volumeInstancedMesh = new THREE.InstancedMesh(miniGeo, miniMat, volumeTotalCount);
+    const dummy = new THREE.Object3D();
+    positions.forEach((pos, idx) => {
+      dummy.position.copy(pos);
+      dummy.rotation.set(0, (idx * 0.618) % (Math.PI * 2), 0);
+      dummy.updateMatrix();
+      volumeInstancedMesh.setMatrixAt(idx, dummy.matrix);
+    });
+    volumeInstancedMesh.instanceMatrix.needsUpdate = true;
+    shellGroup.add(volumeInstancedMesh);
+
+    compareGroup.add(shellGroup);
+    compareMeshes.push(shellGroup);
+    updateVolumeFill();
+
+    const smallPlural = `${small.name.replace(/^The\s+/i, '').replace(/\s*\([^)]*\)/g, '')}s`;
+    const largeShort = large.name.replace(/\s*\([^)]*\)/g, '');
+    const isSampled = volumeRatio > 1000;
+    const badgeSub = isSampled
+      ? `~${formatLargeNumber(packedEstimate)} intact • ${volumeTotalCount.toLocaleString()}-sphere sample`
+      : `~${formatLargeNumber(packedEstimate)} intact spheres (74% packing)`;
+    const volLabel = createLabelSprite(
+      `${formatLargeNumber(volumeRatio)} ${smallPlural} fit inside ${largeShort}`,
+      badgeSub,
+      '#38bdf8',
+      7.4
+    );
+    volLabel.position.set(0, largeVisualR + 2.6, 0);
+    compareGroup.add(volLabel);
   }
+
+  // Show/hide Fill Level slider
+  const fillCtrl = document.getElementById('volume-fill-control');
+  if (fillCtrl) fillCtrl.classList.toggle('hidden', state.compareView !== 'volume');
 
   // Update Inspector Readout & Visual Comparison Bars
   document.getElementById('compare-headline').textContent = `${large.name} vs. ${small.name}`;
-  document.getElementById('compare-diameter-text').textContent =
-    ratio < 1.05 ? 'Nearly Identical Width' : `${formatLargeNumber(ratio)}× Wider`;
+  if (state.compareView === 'volume') {
+    document.getElementById('compare-diameter-text').textContent =
+      volumeRatio < 1.05
+        ? 'Nearly Identical Volume'
+        : `${formatLargeNumber(volumeRatio)}× Volume (~${formatLargeNumber(packedEstimate)} intact)`;
+  } else {
+    document.getElementById('compare-diameter-text').textContent =
+      ratio < 1.05 ? 'Nearly Identical Width' : `${formatLargeNumber(ratio)}× Wider`;
+  }
 
   document.getElementById('cmp-diam-val').textContent = `${formatLargeNumber(ratio)}×`;
   document.getElementById('cmp-area-val').textContent = `${formatLargeNumber(areaRatio)}×`;
+  document.getElementById('cmp-vol-val').textContent = `${formatLargeNumber(volumeRatio)}×`;
   document.getElementById('cmp-mass-val').textContent = `${formatLargeNumber(massRatio)}×`;
 
-  // Log-scaled progress bars so both 1.8x and 1,000x differences read cleanly
-  const logPct = (val) => `${Math.min(100, Math.max(12, (Math.log10(Math.max(val, 1)) / 5) * 100))}%`;
+  // Log-scaled progress bars so both 1.8x and 1,000,000x differences read cleanly
+  const logPct = (val) => `${Math.min(100, Math.max(12, (Math.log10(Math.max(val, 1)) / 6) * 100))}%`;
   document.getElementById('cmp-diam-bar').style.width = logPct(ratio);
   document.getElementById('cmp-area-bar').style.width = logPct(areaRatio);
+  document.getElementById('cmp-vol-bar').style.width = logPct(volumeRatio);
   document.getElementById('cmp-mass-bar').style.width = logPct(massRatio);
 
   const weightOnB = Math.round(150 * bodyB.gravityG);
@@ -752,7 +913,7 @@ function buildCompareScene() {
   if (state.mode === 'compare') {
     const boost = getMobilePortraitBoost();
     const isDesktop = window.innerWidth > 820;
-    const baseDist = state.compareView === 'side' ? 37 : 32;
+    const baseDist = state.compareView === 'side' ? 37 : 31;
     const xLook = isDesktop ? 3.4 : 0;
     const yLook = boost > 1.1 ? 1.5 : 1.0;
     flyCameraTo(new THREE.Vector3(xLook, 4.5, baseDist * boost), new THREE.Vector3(xLook, yLook, 0));
@@ -900,6 +1061,11 @@ document.querySelectorAll('#compare-view-segmented .seg-btn').forEach((btn) => {
     state.compareView = btn.dataset.view;
     buildCompareScene();
   });
+});
+
+document.getElementById('volume-fill-slider')?.addEventListener('input', (e) => {
+  state.volumeFill = parseInt(e.target.value, 10);
+  updateVolumeFill();
 });
 
 // 3D Click/Tap Raycaster

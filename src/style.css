@@ -277,6 +277,10 @@ html, body {
   gap: 5px;
 }
 
+.control-group.hidden {
+  display: none;
+}
+
 .control-group label {
   font-size: 0.78rem;
   color: var(--text-muted);

@@ -167,9 +167,17 @@
           <div class="control-group">
             <label>Comparison View</label>
             <div class="segmented-control" id="compare-view-segmented" role="group" aria-label="Comparison View">
-              <button class="seg-btn active" data-view="side">↔️ Side-by-Side</button>
-              <button class="seg-btn" data-view="concentric">🎯 Concentric Overlay</button>
+              <button class="seg-btn active" data-view="side">↔️ Side</button>
+              <button class="seg-btn" data-view="concentric">🎯 Overlay</button>
+              <button class="seg-btn" data-view="volume">🫙 Volume</button>
             </div>
+          </div>
+
+          <div class="control-group hidden" id="volume-fill-control">
+            <label for="volume-fill-slider">
+              Fill Level <span id="volume-fill-val">100%</span>
+            </label>
+            <input type="range" id="volume-fill-slider" min="0" max="100" step="1" value="100" />
           </div>
 
           <div class="analogy-card" id="compare-readout">
@@ -184,6 +192,10 @@
               <div class="cmp-bar-row">
                 <div class="cmp-bar-head"><span>Surface Area</span><strong id="cmp-area-val">120.3×</strong></div>
                 <div class="cmp-bar-track"><div class="cmp-bar-fill" id="cmp-area-bar" style="width: 100%"></div></div>
+              </div>
+              <div class="cmp-bar-row">
+                <div class="cmp-bar-head"><span>Volume</span><strong id="cmp-vol-val">1,321×</strong></div>
+                <div class="cmp-bar-track"><div class="cmp-bar-fill" id="cmp-vol-bar" style="width: 100%"></div></div>
               </div>
               <div class="cmp-bar-row">
                 <div class="cmp-bar-head"><span>Mass</span><strong id="cmp-mass-val">317.8×</strong></div>
