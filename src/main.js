@@ -607,9 +607,9 @@ function selectBodyInLineup(id, fly = true) {
     const target = lineupMeshes[id];
     const boost = getMobilePortraitBoost();
     const isDesktop = window.innerWidth > 820;
-    const dist = Math.max(target.r * 3.65, 3.6) * boost;
+    const dist = Math.max(target.r * (boost > 1.1 ? 4.3 : 3.65), boost > 1.1 ? 4.3 : 3.6) * boost;
     const xOffset = isDesktop ? target.r * 0.28 : 0;
-    const yLookOffset = boost > 1.1 ? -target.r * 0.45 : target.r * 0.14;
+    const yLookOffset = boost > 1.1 ? target.r * 0.65 : target.r * 0.14;
     flyCameraTo(
       new THREE.Vector3(target.x + xOffset - dist * 0.08, target.r * 0.55 + 0.6, dist),
       new THREE.Vector3(target.x + xOffset, yLookOffset, 0)
@@ -754,7 +754,7 @@ function buildCompareScene() {
     const isDesktop = window.innerWidth > 820;
     const baseDist = state.compareView === 'side' ? 37 : 32;
     const xLook = isDesktop ? 3.4 : 0;
-    const yLook = boost > 1.1 ? -3.2 : 1.0;
+    const yLook = boost > 1.1 ? 1.5 : 1.0;
     flyCameraTo(new THREE.Vector3(xLook, 4.5, baseDist * boost), new THREE.Vector3(xLook, yLook, 0));
   }
 }
@@ -1017,7 +1017,7 @@ function setPanelMinimized(minimized) {
     sheetChevron.textContent = minimized ? '▲ Tap or Pull Up to Show' : '▼ Pull Down to Hide';
   }
   if (btnTogglePanel) {
-    btnTogglePanel.textContent = minimized ? '🎛️ Show Controls' : '🎛️ Hide Controls';
+    btnTogglePanel.textContent = minimized ? '🎛️ Controls' : '🎛️ Hide';
   }
 }
 
@@ -1025,6 +1025,11 @@ btnTogglePanel?.addEventListener('click', () => {
   const isMin = inspectorPanel.classList.contains('minimized');
   setPanelMinimized(!isMin);
 });
+
+// Start with bottom control sheet minimized on narrow mobile portrait screens so 3D worlds are unobstructed
+if (window.innerWidth <= 820 && window.innerHeight > window.innerWidth) {
+  setPanelMinimized(true);
+}
 
 let sheetDrag = {
   active: false,

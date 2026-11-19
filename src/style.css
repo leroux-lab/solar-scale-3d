@@ -620,6 +620,11 @@ body.hud-hidden .planet-dock {
   border-radius: 999px;
   max-width: 96vw;
   overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.planet-dock::-webkit-scrollbar {
+  display: none;
 }
 
 .dock-item {
@@ -659,15 +664,36 @@ body.hud-hidden .planet-dock {
   .top-bar {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
+  }
+  .brand {
+    padding: 7px 11px;
+    gap: 8px;
+  }
+  .brand-icon {
+    font-size: 1.2rem;
+  }
+  .brand h1 {
+    font-size: 0.94rem;
+    white-space: nowrap;
+  }
+  .brand .subtitle {
+    display: none;
+  }
+  .pill-btn {
+    padding: 4px 9px;
+    font-size: 0.7rem;
   }
   .mode-tabs {
     justify-content: space-between;
+    padding: 4px;
   }
   .mode-tab {
     flex: 1;
     padding: 7px 6px;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     text-align: center;
+    white-space: nowrap;
   }
   .inspector-panel {
     top: auto;
@@ -676,5 +702,32 @@ body.hud-hidden .planet-dock {
     right: calc(12px + env(safe-area-inset-right, 0px));
     width: auto;
     max-height: 44vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-bar {
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    left: calc(10px + env(safe-area-inset-left, 0px));
+    right: calc(10px + env(safe-area-inset-right, 0px));
+    gap: 6px;
+  }
+  .brand {
+    padding: 6px 10px;
+    border-radius: 12px;
+  }
+  .brand h1 {
+    font-size: 0.88rem;
+  }
+  .mobile-top-actions {
+    gap: 4px;
+  }
+  .pill-btn {
+    padding: 4px 8px;
+    font-size: 0.68rem;
+  }
+  .mode-tab {
+    padding: 6px 4px;
+    font-size: 0.68rem;
   }
 }
