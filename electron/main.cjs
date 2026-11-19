@@ -87,14 +87,9 @@ function buildDesktopMenu() {
           click: () => mainWindow?.webContents.send('desktop:menu-action', 'mode-lineup'),
         },
         {
-          label: '2. "How Many Fit?" Comparator',
+          label: '2. Size & Scale Comparison',
           accelerator: 'CmdOrCtrl+2',
           click: () => mainWindow?.webContents.send('desktop:menu-action', 'mode-compare'),
-        },
-        {
-          label: '3. Speed & 100-Yard Football Field',
-          accelerator: 'CmdOrCtrl+3',
-          click: () => mainWindow?.webContents.send('desktop:menu-action', 'mode-distance'),
         },
       ],
     },

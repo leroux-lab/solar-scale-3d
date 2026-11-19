@@ -24,6 +24,11 @@
   <body>
     <div id="canvas-container"></div>
 
+    <!-- Floating Restore HUD Pill (shown only in Focus / Cinematics Mode) -->
+    <button class="pill-btn hud-restore-pill hidden" id="btn-restore-hud" title="Show Interface (H)">
+      👁️ Show HUD
+    </button>
+
     <!-- Top Navigation & Mode Switcher -->
     <header class="top-bar">
       <div class="brand">
@@ -36,6 +41,9 @@
           <button class="pill-btn hidden" id="btn-install-pwa" title="Install App to Home Screen">
             📲 Install
           </button>
+          <button class="pill-btn" id="btn-focus-hud" title="Focus Mode — Hide HUD (H)">
+            👁️ Focus
+          </button>
           <button class="pill-btn" id="btn-toggle-panel" title="Toggle Inspector Panel">
             🎛️ Controls
           </button>
@@ -47,10 +55,7 @@
           1. Everyday Object Scale
         </button>
         <button class="mode-tab" data-mode="compare" id="tab-compare">
-          2. "How Many Fit?" Comparator
-        </button>
-        <button class="mode-tab" data-mode="distance" id="tab-distance">
-          3. Speed &amp; Football Field Distance
+          2. Size &amp; Scale Comparison
         </button>
       </nav>
     </header>
@@ -68,168 +73,142 @@
 
       <div class="inspector-body" id="inspector-body">
         <!-- MODE 1 CONTROLS: Everyday Object Lineup -->
-      <div class="mode-panel" id="panel-lineup">
-        <div class="section-header">
-          <span class="badge">TRUE 1:1 DIAMETER</span>
-          <h2>Everyday Object Metaphor</h2>
-        </div>
-
-        <div class="control-group">
-          <label for="lineup-tier-select">3D Lineup Arena</label>
-          <select id="lineup-tier-select">
-            <option value="planetary" selected>🪐 Planetary Stage (Dwarfs, Planets, Exoplanets &amp; Sun)</option>
-            <option value="stellar">🌟 Stellar Titan Stage (The Sun vs. Betelgeuse &amp; UY Scuti)</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="metaphor-select">Imagine Earth is the size of a...</label>
-          <select id="metaphor-select">
-            <option value="marble" selected>🔮 Glass Marble (1.5 cm / 0.6 in)</option>
-            <option value="tennis">🎾 Tennis Ball (6.7 cm / 2.6 in)</option>
-            <option value="basketball">🏀 Basketball (24 cm / 9.4 in)</option>
-          </select>
-        </div>
-
-        <div class="toggle-row" id="sun-toggle-row">
-          <label class="checkbox-label">
-            <input type="checkbox" id="toggle-sun-lineup" checked />
-            <span>Show the Sun's Giant Edge Next to Planets</span>
-          </label>
-        </div>
-
-        <div class="analogy-card" id="analogy-card">
-          <div class="analogy-title" id="selected-planet-name">Earth</div>
-          <div class="analogy-object" id="selected-planet-object">🔮 Glass Marble (1.5 cm)</div>
-          <p class="analogy-desc" id="selected-planet-desc">
-            Our home world. At this scale, you could hold the entire Earth between your thumb and index finger.
-          </p>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <span class="stat-label">Real Diameter</span>
-              <span class="stat-val" id="stat-diameter">12,742 km</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Relative to Earth</span>
-              <span class="stat-val" id="stat-ratio">1.00× Earth</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Volume vs Earth</span>
-              <span class="stat-val" id="stat-volume">1.00× Volume</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Light Scale</span>
-              <span class="stat-val" id="stat-light">8.3 mins</span>
-            </div>
+        <div class="mode-panel" id="panel-lineup">
+          <div class="section-header">
+            <span class="badge">TRUE 1:1 DIAMETER</span>
+            <h2>Everyday Object Scale</h2>
           </div>
-        </div>
-      </div>
 
-      <!-- MODE 2 CONTROLS: Side-by-Side Vs. Comparator -->
-      <div class="mode-panel hidden" id="panel-compare">
-        <div class="section-header">
-          <span class="badge">VOLUME &amp; DIAMETER</span>
-          <h2>Side-by-Side Comparator</h2>
-        </div>
-
-        <div class="vs-selectors">
           <div class="control-group">
-            <label for="compare-a">Smaller / Reference</label>
-            <select id="compare-a"></select>
+            <label>3D Lineup Arena</label>
+            <div class="segmented-control" id="arena-segmented" role="group" aria-label="3D Lineup Arena">
+              <button class="seg-btn active" data-tier="planetary">🪐 Planetary Stage</button>
+              <button class="seg-btn" data-tier="stellar">🌟 Stellar Titans</button>
+            </div>
           </div>
-          <div class="vs-badge">VS</div>
+
           <div class="control-group">
-            <label for="compare-b">Target World / Star</label>
-            <select id="compare-b"></select>
+            <label>Imagine Earth is the size of a...</label>
+            <div class="segmented-control" id="metaphor-segmented" role="group" aria-label="Everyday Object Metaphor">
+              <button class="seg-btn active" data-metaphor="marble">🔮 Marble<span class="seg-sub">1.5 cm</span></button>
+              <button class="seg-btn" data-metaphor="tennis">🎾 Tennis<span class="seg-sub">6.7 cm</span></button>
+              <button class="seg-btn" data-metaphor="basketball">🏀 B-Ball<span class="seg-sub">24 cm</span></button>
+            </div>
+          </div>
+
+          <div class="toggle-stack">
+            <div class="toggle-row" id="sun-toggle-row">
+              <label class="checkbox-label">
+                <input type="checkbox" id="toggle-sun-lineup" checked />
+                <span>Show the Sun's Giant Edge Next to Planets</span>
+              </label>
+            </div>
+            <div class="toggle-row" id="ruler-toggle-row">
+              <label class="checkbox-label">
+                <input type="checkbox" id="toggle-scale-ruler" checked />
+                <span>Show Everyday Scale Ruler on Floor Grid</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="analogy-card" id="analogy-card">
+            <div class="analogy-title" id="selected-planet-name">Earth</div>
+            <div class="analogy-object" id="selected-planet-object">🔮 Standard Glass Marble (1.5 cm)</div>
+            <p class="analogy-desc" id="selected-planet-desc">
+              Our home reference point (1.00×). Liquid oceans cover 71% of its surface under a thin, protective nitrogen-oxygen atmosphere.
+            </p>
+            <div class="stats-grid">
+              <div class="stat-box">
+                <span class="stat-label">Real Diameter</span>
+                <span class="stat-val" id="stat-diameter">12,742 km</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Relative to Earth</span>
+                <span class="stat-val" id="stat-ratio">1.00× Earth</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Surface Area</span>
+                <span class="stat-val" id="stat-area">1.00× Earth</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Surface Gravity</span>
+                <span class="stat-val" id="stat-gravity">1.00g</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="preset-chips">
-          <button class="chip-btn" data-a="pluto" data-b="earth">Pluto vs Earth</button>
-          <button class="chip-btn" data-a="jupiter" data-b="wasp17b">Jupiter vs WASP-17b</button>
-          <button class="chip-btn" data-a="sun" data-b="betelgeuse">Sun vs Betelgeuse</button>
-          <button class="chip-btn" data-a="betelgeuse" data-b="uyscuti">Betelgeuse vs UY Scuti</button>
+        <!-- MODE 2 CONTROLS: Size & Scale Comparison (World vs. World) -->
+        <div class="mode-panel hidden" id="panel-compare">
+          <div class="section-header">
+            <span class="badge">WORLD VS. WORLD</span>
+            <h2>Size &amp; Scale Comparison</h2>
+          </div>
+
+          <div class="vs-selectors">
+            <div class="control-group">
+              <label for="compare-a">World A</label>
+              <select id="compare-a"></select>
+            </div>
+            <button class="swap-btn" id="btn-swap-worlds" title="Swap World A and World B">⇄</button>
+            <div class="control-group">
+              <label for="compare-b">World B</label>
+              <select id="compare-b"></select>
+            </div>
+          </div>
+
+          <div class="preset-chips">
+            <button class="chip-btn" data-a="earth" data-b="mars">Earth vs Mars</button>
+            <button class="chip-btn" data-a="earth" data-b="jupiter">Earth vs Jupiter</button>
+            <button class="chip-btn" data-a="moon" data-b="earth">Moon vs Earth</button>
+            <button class="chip-btn" data-a="sun" data-b="betelgeuse">Sun vs Betelgeuse</button>
+          </div>
+
+          <div class="control-group">
+            <label>Comparison View</label>
+            <div class="segmented-control" id="compare-view-segmented" role="group" aria-label="Comparison View">
+              <button class="seg-btn active" data-view="side">↔️ Side-by-Side</button>
+              <button class="seg-btn" data-view="concentric">🎯 Concentric Overlay</button>
+            </div>
+          </div>
+
+          <div class="analogy-card" id="compare-readout">
+            <div class="analogy-title" id="compare-headline">Jupiter vs. Earth</div>
+            <div class="analogy-object" id="compare-diameter-text">10.97× Wider</div>
+
+            <div class="cmp-bars">
+              <div class="cmp-bar-row">
+                <div class="cmp-bar-head"><span>Diameter</span><strong id="cmp-diam-val">10.97×</strong></div>
+                <div class="cmp-bar-track"><div class="cmp-bar-fill" id="cmp-diam-bar" style="width: 100%"></div></div>
+              </div>
+              <div class="cmp-bar-row">
+                <div class="cmp-bar-head"><span>Surface Area</span><strong id="cmp-area-val">120.3×</strong></div>
+                <div class="cmp-bar-track"><div class="cmp-bar-fill" id="cmp-area-bar" style="width: 100%"></div></div>
+              </div>
+              <div class="cmp-bar-row">
+                <div class="cmp-bar-head"><span>Mass</span><strong id="cmp-mass-val">317.8×</strong></div>
+                <div class="cmp-bar-track"><div class="cmp-bar-fill" id="cmp-mass-bar" style="width: 100%"></div></div>
+              </div>
+            </div>
+
+            <p class="analogy-desc" id="compare-gravity-text">
+              Surface Gravity: 2.53g — If you weigh 150 lbs on Earth, you'd weigh 380 lbs on Jupiter.
+            </p>
+          </div>
         </div>
 
-        <div class="button-row">
-          <button class="btn primary" id="btn-stack-equator">
-            📏 Stack Across Equator
-          </button>
-          <button class="btn accent" id="btn-fill-volume">
-            🫙 Pour Inside Volume
-          </button>
+        <!-- Shared Native Desktop / Web Export Toolbar -->
+        <div class="desktop-toolbar">
+          <div class="button-row">
+            <button class="btn secondary" id="btn-save-png" title="Save 3D Snapshot (Ctrl+S)">
+              📸 Save 3D PNG
+            </button>
+            <button class="btn secondary" id="btn-export-json" title="Export Scale Report (Ctrl+E)">
+              💾 Export JSON
+            </button>
+          </div>
+          <div class="desktop-status" id="desktop-status"></div>
         </div>
-
-        <div class="analogy-card" id="compare-readout">
-          <div class="analogy-title" id="compare-headline">Jupiter vs. Earth</div>
-          <div class="analogy-object" id="compare-diameter-text">11.0 Earths wide</div>
-          <p class="analogy-desc" id="compare-volume-text">
-            You could fit 1,321 Earths inside Jupiter by volume!
-          </p>
-        </div>
-      </div>
-
-      <!-- MODE 3 CONTROLS: Speed & Football Field Distance -->
-      <div class="mode-panel hidden" id="panel-distance">
-        <div class="section-header">
-          <span class="badge">100-YARD SOLAR SYSTEM (+ KUIPER BELT)</span>
-          <h2>Conceivable Distance &amp; Speed</h2>
-        </div>
-
-        <p class="helper-text">
-          If <b>Sun → Neptune</b> is a <b>100-yard football field</b>, <b>Ceres</b> sits at 9.2 yds and <b>Pluto</b> sits at <b>131.4 yds</b> (out in the stadium parking lot!).
-        </p>
-
-        <div class="toggle-row">
-          <label class="checkbox-label">
-            <input type="checkbox" id="toggle-star-engulf" checked />
-            <span>Show Betelgeuse (11.8 yd) &amp; UY Scuti (26.4 yd) Star Shells</span>
-          </label>
-        </div>
-
-        <div class="control-group">
-          <label for="speed-select">Choose Travel Vehicle / Speed</label>
-          <select id="speed-select">
-            <option value="car">🚗 Highway Car (70 mph / 113 km/h)</option>
-            <option value="jet" selected>✈️ Commercial 747 Jet (550 mph / 885 km/h)</option>
-            <option value="rocket">🚀 Apollo Rocket (25,000 mph / 40,000 km/h)</option>
-            <option value="light">⚡ Beam of Light (186,282 mi/sec)</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="journey-slider">
-            Field Position: <span id="yard-readout">3.3 Yards (Earth)</span>
-          </label>
-          <input type="range" id="journey-slider" min="0" max="132" step="0.1" value="3.3" />
-        </div>
-
-        <div class="button-row">
-          <button class="btn primary" id="btn-play-journey">▶ Auto-Fly Outward</button>
-          <button class="btn secondary" id="btn-reset-journey">↺ Reset to Sun</button>
-        </div>
-
-        <div class="analogy-card" id="distance-card">
-          <div class="analogy-title" id="dist-nearest-name">Nearest: Earth (3.3 Yards)</div>
-          <div class="analogy-object" id="dist-travel-time">✈️ 19.3 Years nonstop in a 747 Jet</div>
-          <p class="analogy-desc" id="dist-yard-analogy">
-            If UY Scuti replaced our Sun at the 0-yard line, its surface would stretch to the 26.4-yard line—swallowing Earth, Mars, Ceres, and Jupiter!
-          </p>
-        </div>
-      </div>
-
-      <!-- Shared Native Desktop / Web Export Toolbar -->
-      <div class="desktop-toolbar">
-        <div class="button-row">
-          <button class="btn secondary" id="btn-save-png" title="Save 3D Snapshot (Ctrl+S)">
-            📸 Save 3D PNG
-          </button>
-          <button class="btn secondary" id="btn-export-json" title="Export Scale Report (Ctrl+E)">
-            💾 Export JSON
-          </button>
-        </div>
-        <div class="desktop-status" id="desktop-status"></div>
-      </div>
       </div>
     </aside>
 
