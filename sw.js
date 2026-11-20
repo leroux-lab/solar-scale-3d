@@ -1,4 +1,4 @@
-const CACHE_NAME = 'solar-scale-3d-v8';
+const CACHE_NAME = 'solar-scale-3d-v9';
 const CORE_ASSETS = [
   './',
   './index.html',

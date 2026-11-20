@@ -1305,15 +1305,29 @@ const TUTORIAL_DISMISS_KEY = 'solarScale3d_tutorialDontShow';
 const TUTORIAL_STEPS = [
   {
     badge: 'WELCOME • STEP 1 OF 4',
-    icon: '🪐',
     title: 'Welcome to Solar Scale 3D',
     desc: 'Explore dwarf planets, Solar System worlds, exoplanets, and hypergiant stars at true 1:1 relative scale—or skip straight into the 3D scene.',
+    visualSvg: `
+      <svg viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="tEarth" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#38bdf8"/><stop offset="65%" stop-color="#0369a1"/><stop offset="100%" stop-color="#0c4a6e"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="180" cy="54" rx="88" ry="26" fill="none" stroke="#38bdf8" stroke-opacity="0.45" stroke-dasharray="5 4" stroke-width="1.5"/>
+        <circle cx="180" cy="50" r="24" fill="url(#tEarth)" stroke="#7dd3fc" stroke-width="1.5"/>
+        <path d="M168 42 Q178 36 188 45 Q183 56 172 52 Z" fill="#22c55e" opacity="0.85"/>
+        <circle cx="105" cy="58" r="6" fill="#ef4444" opacity="0.9"/>
+        <circle cx="258" cy="44" r="9" fill="#eab308" opacity="0.9"/>
+        <text x="180" y="91" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="system-ui,sans-serif">Drag to Orbit • Scroll / Pinch to Zoom • Tap Any World</text>
+      </svg>`,
     tips: [
       '🖱️ Drag anywhere to orbit around worlds; scroll or pinch to zoom.',
       '🎯 Tap any planet in the 3D scene or bottom dock to fly smoothly to it.',
       '❓ Replay this guide anytime from the "?" button in the top bar.',
     ],
     nextLabel: 'Start Quick Tour →',
+    highlightSelector: null,
     onEnter: () => {
       setMode('lineup');
       selectBodyInLineup('earth', true);
@@ -1321,15 +1335,27 @@ const TUTORIAL_STEPS = [
   },
   {
     badge: 'MODE 1 • STEP 2 OF 4',
-    icon: '🔮',
     title: 'Everyday Object Scale',
-    desc: 'Make astronomical diameters intuitive by shrinking Earth down to a Glass Marble (1.5 cm), Tennis Ball (6.7 cm), or Basketball (24 cm).',
+    desc: 'Make astronomical diameters intuitive by shrinking Earth down to a Glass Marble, Tennis Ball, or Basketball—with a live 3D scale ruler.',
+    visualSvg: `
+      <svg viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
+        <line x1="28" y1="74" x2="332" y2="74" stroke="#38bdf8" stroke-opacity="0.45" stroke-width="1.5"/>
+        <circle cx="66" cy="56" r="7" fill="#38bdf8" stroke="#bae6fd" stroke-width="1.2"/>
+        <text x="66" y="38" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Earth</text>
+        <text x="66" y="88" text-anchor="middle" fill="#7dd3fc" font-size="9" font-family="system-ui,sans-serif">Marble 1.5 cm</text>
+        <circle cx="174" cy="46" r="20" fill="#fb923c" stroke="#fed7aa" stroke-width="1.5"/>
+        <text x="174" y="19" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Jupiter (11×)</text>
+        <text x="174" y="88" text-anchor="middle" fill="#fdba74" font-size="9" font-family="system-ui,sans-serif">Grapefruit 16.5 cm</text>
+        <circle cx="300" cy="48" r="28" fill="#f59e0b" fill-opacity="0.85" stroke="#fef08a" stroke-width="1.5"/>
+        <text x="300" y="14" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Sun (109×)</text>
+        <text x="300" y="88" text-anchor="middle" fill="#fde047" font-size="9" font-family="system-ui,sans-serif">5.4 ft Beach Ball</text>
+      </svg>`,
     tips: [
       '🪐 Switch between Planetary Stage and 🌟 Stellar Titans (Betelgeuse & UY Scuti).',
       '📏 Toggle the Everyday Scale Ruler on the floor grid for physical perspective.',
-      '☀️ Toggle the Sun’s giant glowing edge right next to the planets.',
     ],
     nextLabel: 'Next: Comparisons →',
+    highlightSelector: '#tab-lineup',
     onEnter: () => {
       setMode('lineup');
       state.lineupTier = 'planetary';
@@ -1340,15 +1366,33 @@ const TUTORIAL_STEPS = [
   },
   {
     badge: 'MODE 2 • STEP 3 OF 4',
-    icon: '🫙',
     title: 'Size, Overlay & Volume Fit',
-    desc: 'Compare any two worlds head-to-head in Mode 2. Switch between Side-by-Side, Concentric Overlay, and 3D Volume Fit packing.',
+    desc: 'Compare any two worlds in Mode 2. Notice Jupiter live behind this card—packed with miniature Earths in 3D Volume Fit mode!',
+    visualSvg: `
+      <svg viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(55,50)">
+          <circle cx="-18" cy="0" r="6" fill="#38bdf8"/><circle cx="14" cy="0" r="18" fill="#fb923c"/>
+          <text x="0" y="36" text-anchor="middle" fill="#94a3b8" font-size="9.5" font-family="system-ui,sans-serif">↔️ Side</text>
+        </g>
+        <g transform="translate(178,50)">
+          <circle cx="0" cy="0" r="22" fill="#fb923c" fill-opacity="0.8"/>
+          <circle cx="0" cy="0" r="7" fill="#38bdf8" stroke="#ffffff" stroke-width="1.4"/>
+          <text x="0" y="36" text-anchor="middle" fill="#94a3b8" font-size="9.5" font-family="system-ui,sans-serif">🎯 Overlay</text>
+        </g>
+        <g transform="translate(296,50)">
+          <circle cx="0" cy="0" r="24" fill="#fb923c" fill-opacity="0.16" stroke="#fdba74" stroke-width="1.8"/>
+          <circle cx="-8" cy="8" r="4" fill="#38bdf8"/><circle cx="0" cy="10" r="4" fill="#38bdf8"/>
+          <circle cx="8" cy="8" r="4" fill="#38bdf8"/><circle cx="-4" cy="1" r="4" fill="#38bdf8"/>
+          <circle cx="5" cy="1" r="4" fill="#38bdf8"/><circle cx="0" cy="-7" r="4" fill="#38bdf8"/>
+          <text x="0" y="36" text-anchor="middle" fill="#7dd3fc" font-size="9.5" font-weight="700" font-family="system-ui,sans-serif">🫙 Volume Fit</text>
+        </g>
+      </svg>`,
     tips: [
-      '🫙 Volume Fit packs miniature worlds inside a translucent glass shell with a live Fill Level slider.',
-      '⇄ Tap Swap or use quick presets (Earth vs Mars, Sun vs Betelgeuse).',
-      '⚖️ Compare Diameter, Surface Area, Volume, Mass, and Surface Gravity (g).',
+      '🫙 Drag the Fill Level slider to pour miniature worlds into the translucent shell.',
+      '⇄ Tap Swap or quick presets to compare Diameter, Area, Volume, Mass & Gravity.',
     ],
     nextLabel: 'Next: Pro Controls →',
+    highlightSelector: '#tab-compare',
     onEnter: () => {
       state.compareAId = 'earth';
       state.compareBId = 'jupiter';
@@ -1363,15 +1407,24 @@ const TUTORIAL_STEPS = [
   },
   {
     badge: 'TIPS • STEP 4 OF 4',
-    icon: '✨',
     title: 'Focus Mode & Snapshots',
-    desc: 'Enjoy unobstructed 3D views on desktop, iPad, or iPhone and save high-resolution snapshots or scale data reports.',
+    desc: 'Hide the HUD for pure unobstructed 3D viewing, export PNG snapshots or JSON reports, and swipe controls away on mobile.',
+    visualSvg: `
+      <svg viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="26" y="16" width="142" height="68" rx="10" fill="rgba(56,189,248,0.10)" stroke="#38bdf8" stroke-dasharray="4 3" stroke-width="1.4"/>
+        <circle cx="97" cy="50" r="18" fill="#38bdf8" fill-opacity="0.75"/>
+        <text x="97" y="77" text-anchor="middle" fill="#7dd3fc" font-size="9" font-weight="700" font-family="system-ui,sans-serif">👁️ Focus Mode (H)</text>
+        <rect x="192" y="20" width="142" height="26" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)"/>
+        <text x="263" y="37" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="600" font-family="system-ui,sans-serif">📸 PNG &amp; 💾 JSON</text>
+        <rect x="192" y="54" width="142" height="26" rx="8" fill="rgba(56,189,248,0.14)" stroke="rgba(56,189,248,0.35)"/>
+        <text x="263" y="71" text-anchor="middle" fill="#7dd3fc" font-size="10" font-weight="600" font-family="system-ui,sans-serif">▼ Swipe Controls Sheet</text>
+      </svg>`,
     tips: [
       '👁️ Tap Focus (or press H) to hide the HUD for cinematic 3D viewing.',
-      '📸 Use Save 3D PNG (Ctrl+S) or Export JSON (Ctrl+E) in the controls panel.',
-      '📱 On mobile, swipe the Controls handle down or up to tuck the panel away.',
+      '📸 Save 3D PNG (Ctrl+S) or Export JSON (Ctrl+E) in the controls panel.',
     ],
     nextLabel: 'Start Exploring 🚀',
+    highlightSelector: '#btn-focus-hud',
     onEnter: () => {
       setMode('lineup');
       selectBodyInLineup('earth', true);
@@ -1381,7 +1434,7 @@ const TUTORIAL_STEPS = [
 
 const tutorialOverlay = document.getElementById('tutorial-overlay');
 const tutorialBadge = document.getElementById('tutorial-step-badge');
-const tutorialIcon = document.getElementById('tutorial-icon');
+const tutorialVisual = document.getElementById('tutorial-visual');
 const tutorialTitle = document.getElementById('tutorial-title');
 const tutorialDesc = document.getElementById('tutorial-desc');
 const tutorialTips = document.getElementById('tutorial-tips');
@@ -1395,12 +1448,18 @@ const btnOpenTutorial = document.getElementById('btn-open-tutorial');
 
 let tutorialStepIndex = 0;
 
+function clearTutorialHighlights() {
+  document.querySelectorAll('.tutorial-highlight').forEach((el) => {
+    el.classList.remove('tutorial-highlight');
+  });
+}
+
 function renderTutorialStep(index, triggerScene = true) {
   tutorialStepIndex = Math.max(0, Math.min(index, TUTORIAL_STEPS.length - 1));
   const step = TUTORIAL_STEPS[tutorialStepIndex];
 
   tutorialBadge.textContent = step.badge;
-  tutorialIcon.textContent = step.icon;
+  if (tutorialVisual) tutorialVisual.innerHTML = step.visualSvg;
   tutorialTitle.textContent = step.title;
   tutorialDesc.textContent = step.desc;
   tutorialTips.innerHTML = step.tips.map((t) => `<li>${t}</li>`).join('');
@@ -1408,6 +1467,14 @@ function renderTutorialStep(index, triggerScene = true) {
   tutorialDots.innerHTML = TUTORIAL_STEPS.map(
     (_, i) => `<span class="tutorial-dot ${i === tutorialStepIndex ? 'active' : ''}"></span>`
   ).join('');
+
+  // Dock card & clear scrim on active tour steps (Steps 2–4) so the live 3D scene is crystal clear
+  tutorialOverlay.classList.toggle('tour-live', tutorialStepIndex > 0);
+
+  clearTutorialHighlights();
+  if (step.highlightSelector) {
+    document.querySelector(step.highlightSelector)?.classList.add('tutorial-highlight');
+  }
 
   btnTutorialPrev.classList.toggle('hidden', tutorialStepIndex === 0);
   btnTutorialSkipBtn.classList.toggle('hidden', tutorialStepIndex > 0);
@@ -1429,6 +1496,8 @@ function openTutorial(startIndex = 0) {
 
 function closeTutorial(returnToLineup = false) {
   if (!tutorialOverlay) return;
+  clearTutorialHighlights();
+  tutorialOverlay.classList.remove('tour-live');
   tutorialOverlay.classList.add('hidden');
   try {
     sessionStorage.setItem(TUTORIAL_SESSION_KEY, '1');
