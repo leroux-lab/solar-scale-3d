@@ -1,4 +1,4 @@
-const CACHE_NAME = 'solar-scale-3d-v9';
+const CACHE_NAME = 'solar-scale-3d-v10';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -19,7 +19,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// 2. Activate: Clean up old caches
+// 2. Activate: Clean up old caches immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -31,9 +31,36 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// 3. Fetch: Stale-while-revalidate for local files + cache Three.js CDN modules for offline play
+// 3. Fetch:
+// - Network-First (with cache fallback) for HTML, CSS, JS so mobile PWAs pick up updates immediately
+// - Cache-First (with background refresh) for icons & Three.js CDN modules for instant offline loads
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+  const isSameOrigin = url.origin === self.location.origin;
+  const isAppCode =
+    isSameOrigin &&
+    (event.request.mode === 'navigate' ||
+      event.request.destination === 'document' ||
+      event.request.destination === 'script' ||
+      event.request.destination === 'style' ||
+      /\.(html|js|css|json)$/i.test(url.pathname));
+
+  if (isAppCode) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {

@@ -1490,6 +1490,7 @@ function openTutorial(startIndex = 0) {
   try {
     tutorialDontShow.checked = localStorage.getItem(TUTORIAL_DISMISS_KEY) === '1';
   } catch {}
+  document.body.classList.add('tutorial-open');
   tutorialOverlay.classList.remove('hidden');
   renderTutorialStep(startIndex, false);
 }
@@ -1497,6 +1498,7 @@ function openTutorial(startIndex = 0) {
 function closeTutorial(returnToLineup = false) {
   if (!tutorialOverlay) return;
   clearTutorialHighlights();
+  document.body.classList.remove('tutorial-open');
   tutorialOverlay.classList.remove('tour-live');
   tutorialOverlay.classList.add('hidden');
   try {

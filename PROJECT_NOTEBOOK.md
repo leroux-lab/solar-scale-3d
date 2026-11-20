@@ -33,7 +33,7 @@
 ### 3. 📱 Mobile Application (`PWA` & `Capacitor`) — ✅ LIVE & INSTALLABLE
 - **Core Files:** `manifest.json`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon.svg`, `capacitor.config.json`, `scripts/prepare-mobile-www.cjs`
 - **Features Shipped:**
-  - **Offline Service Worker (`sw.js`, cache `solar-scale-3d-v9`):** Pre-caches app shell and caches Three.js modules for offline execution after installing to the iOS (**Safari -> Share -> Add to Home Screen**) or Android (**Chrome -> Install App**) Home Screen.
+  - **Offline Service Worker (`sw.js`, cache `solar-scale-3d-v10`):** Uses Network-First (with cache fallback) for HTML/CSS/JS so mobile PWAs pick up updates immediately when online, while keeping Cache-First for icons and Three.js modules for offline execution after installing to iOS (**Safari -> Share -> Add to Home Screen**) or Android (**Chrome -> Install App**).
   - **Swipeable Pull-Down Control Sheet (`#panel-drag-handle`):** Touch drag-down/pull-up gesture and tap-to-minimize header (`▼ Pull Down to Hide` / `▲ Tap or Pull Up to Show`) so mobile users can slide the control panel down to a compact bottom peek bar.
   - **Portrait 3D Framing (`getMobilePortraitBoost()`):** Automatically steps the 3D camera back on vertical phone screens (`aspect < 1.0`) so planets and floating labels sit cleanly above the bottom control sheet.
   - **Capacitor Native Bundle (`www/`):** Built via `npm run mobile:prep` (`scripts/prepare-mobile-www.cjs`), bundling local offline Three.js inside `www/vendor/three/` for Android Studio (`.apk`) / Xcode (`.ipa`).
