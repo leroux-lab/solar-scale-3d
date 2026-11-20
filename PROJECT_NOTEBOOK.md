@@ -16,7 +16,7 @@
 - **Features Shipped:**
   - **Mode 1 — Everyday Object Scale ("If Earth Were a..."):** True 1:1 relative diameter lineup of Dwarf Planets (*Ceres*, *Pluto*), Solar System Worlds (*Mercury* through *Neptune* + *The Moon*), Exoplanets (*Kepler-22b*, *WASP-17b*), and Hypergiant Stars (*The Sun*, *Betelgeuse*, *UY Scuti*) with segmented *Glass Marble (1.5 cm)*, *Tennis Ball (6.7 cm)*, and *Basketball (24 cm)* metaphors, auto-switching *Stellar Titan Stage*, and an optional 3D **Everyday Scale Ruler** on the floor grid.
   - **Mode 2 — Size & Scale Comparison (World vs. World):** True 1:1 *Side*, *Concentric Overlay*, and *Volume Fit* (translucent Fresnel-glass shell + GPU-instanced `THREE.InstancedMesh` 3D hexagonal lattice packing + interactive **Fill Level** slider + 74% Kepler sphere-packing readout) with quick Swap (`⇄`), preset chips, architectural diameter callouts, and visual comparison bars for *Diameter*, *Surface Area*, *Volume*, *Mass*, and *Surface Gravity* (`g`).
-  - **High-Res Procedural PBR Assets & Focus Mode:** `1024×512` paired Albedo/Bump/Roughness maps, rotating Earth cloud sphere, Fresnel atmospheric rim glow halos, radial UV-mapped Saturn rings with Cassini Division, multi-temperature starfield, `ACESFilmicToneMapping`, and `H` / **Focus Mode** HUD toggle.
+  - **High-Res Procedural PBR Assets, Focus Mode & Quick-Start Tutorial:** `1024×512` paired Albedo/Bump/Roughness maps, rotating Earth cloud sphere, Fresnel atmospheric rim glow halos, radial UV-mapped Saturn rings with Cassini Division, multi-temperature starfield, `ACESFilmicToneMapping`, `H` / **Focus Mode** HUD toggle, and a skippable 4-step **Quick-Start Tutorial** at session start (replayable via `?`).
   - *(Note: Mode 3 Speed & 100-Yard Football Field was shelved from the active UI in the v2 redesign to keep the experience focused.)*
 
 ### 2. 💻 Windows Desktop Application (`Electron`) — ✅ BUILT & PACKAGED
@@ -33,7 +33,7 @@
 ### 3. 📱 Mobile Application (`PWA` & `Capacitor`) — ✅ LIVE & INSTALLABLE
 - **Core Files:** `manifest.json`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon.svg`, `capacitor.config.json`, `scripts/prepare-mobile-www.cjs`
 - **Features Shipped:**
-  - **Offline Service Worker (`sw.js`, cache `solar-scale-3d-v7`):** Pre-caches app shell and caches Three.js modules for offline execution after installing to the iOS (**Safari -> Share -> Add to Home Screen**) or Android (**Chrome -> Install App**) Home Screen.
+  - **Offline Service Worker (`sw.js`, cache `solar-scale-3d-v8`):** Pre-caches app shell and caches Three.js modules for offline execution after installing to the iOS (**Safari -> Share -> Add to Home Screen**) or Android (**Chrome -> Install App**) Home Screen.
   - **Swipeable Pull-Down Control Sheet (`#panel-drag-handle`):** Touch drag-down/pull-up gesture and tap-to-minimize header (`▼ Pull Down to Hide` / `▲ Tap or Pull Up to Show`) so mobile users can slide the control panel down to a compact bottom peek bar.
   - **Portrait 3D Framing (`getMobilePortraitBoost()`):** Automatically steps the 3D camera back on vertical phone screens (`aspect < 1.0`) so planets and floating labels sit cleanly above the bottom control sheet.
   - **Capacitor Native Bundle (`www/`):** Built via `npm run mobile:prep` (`scripts/prepare-mobile-www.cjs`), bundling local offline Three.js inside `www/vendor/three/` for Android Studio (`.apk`) / Xcode (`.ipa`).

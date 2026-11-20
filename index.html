@@ -41,6 +41,9 @@
           <button class="pill-btn hidden" id="btn-install-pwa" title="Install App to Home Screen">
             📲 Install
           </button>
+          <button class="pill-btn" id="btn-open-tutorial" title="Quick-Start Tutorial">
+            ?
+          </button>
           <button class="pill-btn" id="btn-focus-hud" title="Focus Mode — Hide HUD (H)">
             👁️ Focus
           </button>
@@ -228,6 +231,39 @@
     <footer class="planet-dock" id="planet-dock" aria-label="Select Celestial Body">
       <!-- Populated dynamically by src/main.js -->
     </footer>
+
+    <!-- Interactive Quick-Start Tutorial Overlay (Skippable at Session Start) -->
+    <div class="tutorial-overlay hidden" id="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+      <div class="tutorial-card">
+        <div class="tutorial-top-row">
+          <span class="badge" id="tutorial-step-badge">WELCOME • STEP 1 OF 4</span>
+          <button class="tutorial-skip-link" id="btn-tutorial-skip" title="Skip tutorial for this session (Esc)">
+            Skip ✕
+          </button>
+        </div>
+
+        <div class="tutorial-icon" id="tutorial-icon">🪐</div>
+        <h2 class="tutorial-title" id="tutorial-title">Welcome to Solar Scale 3D</h2>
+        <p class="tutorial-desc" id="tutorial-desc">
+          Explore dwarf planets, Solar System worlds, exoplanets, and hypergiant stars at true 1:1 relative scale. Drag to orbit, pinch or scroll to zoom, and tap any world to fly there.
+        </p>
+
+        <ul class="tutorial-tips" id="tutorial-tips"></ul>
+
+        <div class="tutorial-dots" id="tutorial-dots" aria-hidden="true"></div>
+
+        <div class="tutorial-actions">
+          <button class="btn secondary hidden" id="btn-tutorial-prev">← Back</button>
+          <button class="btn secondary" id="btn-tutorial-skip-btn">Skip Tutorial</button>
+          <button class="btn primary" id="btn-tutorial-next">Start Quick Tour →</button>
+        </div>
+
+        <label class="checkbox-label tutorial-optout">
+          <input type="checkbox" id="tutorial-dont-show" />
+          <span>Don't show automatically on startup</span>
+        </label>
+      </div>
+    </div>
 
     <script type="module" src="./src/main.js"></script>
   </body>

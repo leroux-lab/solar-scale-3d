@@ -1297,7 +1297,195 @@ window.addEventListener('resize', () => {
 });
 
 // ============================================================================
-// 7. Main Animation Loop
+// 7. Interactive Quick-Start Tutorial (Skippable at Session Start)
+// ============================================================================
+const TUTORIAL_SESSION_KEY = 'solarScale3d_tutorialSeenSession';
+const TUTORIAL_DISMISS_KEY = 'solarScale3d_tutorialDontShow';
+
+const TUTORIAL_STEPS = [
+  {
+    badge: 'WELCOME • STEP 1 OF 4',
+    icon: '🪐',
+    title: 'Welcome to Solar Scale 3D',
+    desc: 'Explore dwarf planets, Solar System worlds, exoplanets, and hypergiant stars at true 1:1 relative scale—or skip straight into the 3D scene.',
+    tips: [
+      '🖱️ Drag anywhere to orbit around worlds; scroll or pinch to zoom.',
+      '🎯 Tap any planet in the 3D scene or bottom dock to fly smoothly to it.',
+      '❓ Replay this guide anytime from the "?" button in the top bar.',
+    ],
+    nextLabel: 'Start Quick Tour →',
+    onEnter: () => {
+      setMode('lineup');
+      selectBodyInLineup('earth', true);
+    },
+  },
+  {
+    badge: 'MODE 1 • STEP 2 OF 4',
+    icon: '🔮',
+    title: 'Everyday Object Scale',
+    desc: 'Make astronomical diameters intuitive by shrinking Earth down to a Glass Marble (1.5 cm), Tennis Ball (6.7 cm), or Basketball (24 cm).',
+    tips: [
+      '🪐 Switch between Planetary Stage and 🌟 Stellar Titans (Betelgeuse & UY Scuti).',
+      '📏 Toggle the Everyday Scale Ruler on the floor grid for physical perspective.',
+      '☀️ Toggle the Sun’s giant glowing edge right next to the planets.',
+    ],
+    nextLabel: 'Next: Comparisons →',
+    onEnter: () => {
+      setMode('lineup');
+      state.lineupTier = 'planetary';
+      updateArenaButtons();
+      buildLineupScene();
+      selectBodyInLineup('earth', true);
+    },
+  },
+  {
+    badge: 'MODE 2 • STEP 3 OF 4',
+    icon: '🫙',
+    title: 'Size, Overlay & Volume Fit',
+    desc: 'Compare any two worlds head-to-head in Mode 2. Switch between Side-by-Side, Concentric Overlay, and 3D Volume Fit packing.',
+    tips: [
+      '🫙 Volume Fit packs miniature worlds inside a translucent glass shell with a live Fill Level slider.',
+      '⇄ Tap Swap or use quick presets (Earth vs Mars, Sun vs Betelgeuse).',
+      '⚖️ Compare Diameter, Surface Area, Volume, Mass, and Surface Gravity (g).',
+    ],
+    nextLabel: 'Next: Pro Controls →',
+    onEnter: () => {
+      state.compareAId = 'earth';
+      state.compareBId = 'jupiter';
+      state.compareView = 'volume';
+      state.volumeFill = 100;
+      const fillSlider = document.getElementById('volume-fill-slider');
+      if (fillSlider) fillSlider.value = '100';
+      selectA.value = 'earth';
+      selectB.value = 'jupiter';
+      setMode('compare');
+    },
+  },
+  {
+    badge: 'TIPS • STEP 4 OF 4',
+    icon: '✨',
+    title: 'Focus Mode & Snapshots',
+    desc: 'Enjoy unobstructed 3D views on desktop, iPad, or iPhone and save high-resolution snapshots or scale data reports.',
+    tips: [
+      '👁️ Tap Focus (or press H) to hide the HUD for cinematic 3D viewing.',
+      '📸 Use Save 3D PNG (Ctrl+S) or Export JSON (Ctrl+E) in the controls panel.',
+      '📱 On mobile, swipe the Controls handle down or up to tuck the panel away.',
+    ],
+    nextLabel: 'Start Exploring 🚀',
+    onEnter: () => {
+      setMode('lineup');
+      selectBodyInLineup('earth', true);
+    },
+  },
+];
+
+const tutorialOverlay = document.getElementById('tutorial-overlay');
+const tutorialBadge = document.getElementById('tutorial-step-badge');
+const tutorialIcon = document.getElementById('tutorial-icon');
+const tutorialTitle = document.getElementById('tutorial-title');
+const tutorialDesc = document.getElementById('tutorial-desc');
+const tutorialTips = document.getElementById('tutorial-tips');
+const tutorialDots = document.getElementById('tutorial-dots');
+const btnTutorialPrev = document.getElementById('btn-tutorial-prev');
+const btnTutorialSkipTop = document.getElementById('btn-tutorial-skip');
+const btnTutorialSkipBtn = document.getElementById('btn-tutorial-skip-btn');
+const btnTutorialNext = document.getElementById('btn-tutorial-next');
+const tutorialDontShow = document.getElementById('tutorial-dont-show');
+const btnOpenTutorial = document.getElementById('btn-open-tutorial');
+
+let tutorialStepIndex = 0;
+
+function renderTutorialStep(index, triggerScene = true) {
+  tutorialStepIndex = Math.max(0, Math.min(index, TUTORIAL_STEPS.length - 1));
+  const step = TUTORIAL_STEPS[tutorialStepIndex];
+
+  tutorialBadge.textContent = step.badge;
+  tutorialIcon.textContent = step.icon;
+  tutorialTitle.textContent = step.title;
+  tutorialDesc.textContent = step.desc;
+  tutorialTips.innerHTML = step.tips.map((t) => `<li>${t}</li>`).join('');
+
+  tutorialDots.innerHTML = TUTORIAL_STEPS.map(
+    (_, i) => `<span class="tutorial-dot ${i === tutorialStepIndex ? 'active' : ''}"></span>`
+  ).join('');
+
+  btnTutorialPrev.classList.toggle('hidden', tutorialStepIndex === 0);
+  btnTutorialSkipBtn.classList.toggle('hidden', tutorialStepIndex > 0);
+  btnTutorialNext.textContent = step.nextLabel;
+
+  if (triggerScene && typeof step.onEnter === 'function') {
+    step.onEnter();
+  }
+}
+
+function openTutorial(startIndex = 0) {
+  if (!tutorialOverlay) return;
+  try {
+    tutorialDontShow.checked = localStorage.getItem(TUTORIAL_DISMISS_KEY) === '1';
+  } catch {}
+  tutorialOverlay.classList.remove('hidden');
+  renderTutorialStep(startIndex, false);
+}
+
+function closeTutorial(returnToLineup = false) {
+  if (!tutorialOverlay) return;
+  tutorialOverlay.classList.add('hidden');
+  try {
+    sessionStorage.setItem(TUTORIAL_SESSION_KEY, '1');
+    if (tutorialDontShow?.checked) {
+      localStorage.setItem(TUTORIAL_DISMISS_KEY, '1');
+    } else {
+      localStorage.removeItem(TUTORIAL_DISMISS_KEY);
+    }
+  } catch {}
+  if (returnToLineup) {
+    setMode('lineup');
+    selectBodyInLineup('earth', true);
+  }
+}
+
+btnOpenTutorial?.addEventListener('click', () => openTutorial(0));
+btnTutorialSkipTop?.addEventListener('click', () => closeTutorial(false));
+btnTutorialSkipBtn?.addEventListener('click', () => closeTutorial(false));
+btnTutorialPrev?.addEventListener('click', () => renderTutorialStep(tutorialStepIndex - 1, true));
+btnTutorialNext?.addEventListener('click', () => {
+  if (tutorialStepIndex >= TUTORIAL_STEPS.length - 1) {
+    closeTutorial(true);
+  } else {
+    renderTutorialStep(tutorialStepIndex + 1, true);
+  }
+});
+
+// Clicking outside the modal card also skips cleanly
+tutorialOverlay?.addEventListener('click', (e) => {
+  if (e.target === tutorialOverlay) closeTutorial(false);
+});
+
+window.addEventListener('keydown', (e) => {
+  if (!tutorialOverlay || tutorialOverlay.classList.contains('hidden')) return;
+  if (e.key === 'Escape') closeTutorial(false);
+  else if (e.key === 'ArrowRight') {
+    if (tutorialStepIndex < TUTORIAL_STEPS.length - 1) renderTutorialStep(tutorialStepIndex + 1, true);
+  } else if (e.key === 'ArrowLeft') {
+    if (tutorialStepIndex > 0) renderTutorialStep(tutorialStepIndex - 1, true);
+  }
+});
+
+// Show tutorial automatically at the start of a new session unless opted out
+(() => {
+  let seenThisSession = false;
+  let dontShowAgain = false;
+  try {
+    seenThisSession = sessionStorage.getItem(TUTORIAL_SESSION_KEY) === '1';
+    dontShowAgain = localStorage.getItem(TUTORIAL_DISMISS_KEY) === '1';
+  } catch {}
+  if (!seenThisSession && !dontShowAgain) {
+    openTutorial(0);
+  }
+})();
+
+// ============================================================================
+// 8. Main Animation Loop
 // ============================================================================
 const clock = new THREE.Clock();
 

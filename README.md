@@ -18,6 +18,7 @@ An interactive **3D Solar System, Exoplanet & Hypergiant Star Scale Visualizer**
 ## 🎨 Visual & Cross-Platform Features
 - **High-Res Procedural PBR Assets:** `1024×512` paired Albedo, Bump, and Roughness maps, rotating Earth cloud layer, Fresnel atmospheric rim glow halos, radial UV-mapped Saturn rings with Cassini Division, multi-temperature starfield, and `ACESFilmicToneMapping`.
 - **Focus / Cinematics Mode:** Press `H` or tap **👁️ Focus** to hide the HUD for unobstructed 3D viewing and clean PNG snapshots (`Ctrl+S`).
+- **Interactive Quick-Start Tutorial:** Skippable 4-step walkthrough at session start (with live 3D mode previews, optional startup opt-out, and `?` replay button in the top bar).
 - **Desktop & Mobile Ready:** Runs 100% offline as a packaged Windows Electron app (`SolarScale.exe`), an installable iOS/Android PWA (`sw.js`), or a Capacitor mobile bundle (`npm run mobile:prep`).
 
 ## 🚀 Run Locally
