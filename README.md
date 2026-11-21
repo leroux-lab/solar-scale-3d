@@ -6,9 +6,9 @@
 An interactive **3D Solar System, Exoplanet & Hypergiant Star Scale Visualizer** built with **Three.js**, **Electron**, and **PWA/Capacitor** that makes astronomical sizes conceivable to the human mind.
 
 ## ✨ Two Interactive Perspective Modes
-1. **Everyday Object Scale ("If Earth Were a..."):**
+1. **True Scale Lineup & Planetary Facts:**
    - Compare **Dwarf Planets** (*Ceres*, *Pluto*), **Solar System Planets** (*Mercury* through *Neptune* + *The Moon*), **Exoplanets** (*Kepler-22b*, *WASP-17b*), and **Stars** (*The Sun*, *Betelgeuse*, *UY Scuti*) at **true 1:1 relative diameter**.
-   - Switch between human-scale metaphors via segmented controls: **Glass Marble (1.5 cm)**, **Tennis Ball (6.7 cm)**, or **Basketball (24 cm)**—with an optional **3D Everyday Scale Ruler** on the floor grid.
+   - Explore curated **astronomical facts**, classification taglines, **Real Diameter**, **Relative to Earth**, **Surface Area**, and **Surface Gravity (`g`)** for every world.
    - Includes the **Stellar Titan Stage**, showing how *Betelgeuse* (`763× Sun`) and *UY Scuti* (`1,706× Sun`) engulf the orbits of Earth, Mars, and Jupiter.
 2. **Size & Scale Comparison (World vs. World):**
    - Compare any two worlds or stars at true 1:1 relative diameter on a radial blueprint scale grid.

@@ -562,6 +562,24 @@ body.hud-hidden .planet-dock {
   color: #cbd5e1;
 }
 
+.planet-facts-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 2px 0;
+  padding: 8px 10px;
+  background: rgba(5, 7, 15, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+}
+
+.planet-facts-list li {
+  font-size: 0.73rem;
+  line-height: 1.38;
+  color: #e2e8f0;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

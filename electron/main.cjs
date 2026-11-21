@@ -82,7 +82,7 @@ function buildDesktopMenu() {
       label: 'Perspective Modes',
       submenu: [
         {
-          label: '1. Everyday Object Scale',
+          label: '1. True Scale Lineup',
           accelerator: 'CmdOrCtrl+1',
           click: () => mainWindow?.webContents.send('desktop:menu-action', 'mode-lineup'),
         },

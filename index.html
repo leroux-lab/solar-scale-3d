@@ -11,7 +11,7 @@
     <link rel="manifest" href="./manifest.json" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
-    <link rel="stylesheet" href="./src/style.css" />
+    <link rel="stylesheet" href="./src/style.css?v=11" />
     <script type="importmap">
       {
         "imports": {
@@ -55,7 +55,7 @@
 
       <nav class="mode-tabs" role="tablist">
         <button class="mode-tab active" data-mode="lineup" id="tab-lineup">
-          1. Everyday Object Scale
+          1. True Scale Lineup
         </button>
         <button class="mode-tab" data-mode="compare" id="tab-compare">
           2. Size &amp; Scale Comparison
@@ -75,11 +75,11 @@
       </div>
 
       <div class="inspector-body" id="inspector-body">
-        <!-- MODE 1 CONTROLS: Everyday Object Lineup -->
+        <!-- MODE 1 CONTROLS: True Scale Lineup & Planetary Facts -->
         <div class="mode-panel" id="panel-lineup">
           <div class="section-header">
             <span class="badge">TRUE 1:1 DIAMETER</span>
-            <h2>Everyday Object Scale</h2>
+            <h2>True Scale Lineup</h2>
           </div>
 
           <div class="control-group">
@@ -90,15 +90,6 @@
             </div>
           </div>
 
-          <div class="control-group">
-            <label>Imagine Earth is the size of a...</label>
-            <div class="segmented-control" id="metaphor-segmented" role="group" aria-label="Everyday Object Metaphor">
-              <button class="seg-btn active" data-metaphor="marble">🔮 Marble<span class="seg-sub">1.5 cm</span></button>
-              <button class="seg-btn" data-metaphor="tennis">🎾 Tennis<span class="seg-sub">6.7 cm</span></button>
-              <button class="seg-btn" data-metaphor="basketball">🏀 B-Ball<span class="seg-sub">24 cm</span></button>
-            </div>
-          </div>
-
           <div class="toggle-stack">
             <div class="toggle-row" id="sun-toggle-row">
               <label class="checkbox-label">
@@ -106,20 +97,15 @@
                 <span>Show the Sun's Giant Edge Next to Planets</span>
               </label>
             </div>
-            <div class="toggle-row" id="ruler-toggle-row">
-              <label class="checkbox-label">
-                <input type="checkbox" id="toggle-scale-ruler" checked />
-                <span>Show Everyday Scale Ruler on Floor Grid</span>
-              </label>
-            </div>
           </div>
 
           <div class="analogy-card" id="analogy-card">
             <div class="analogy-title" id="selected-planet-name">Earth</div>
-            <div class="analogy-object" id="selected-planet-object">🔮 Standard Glass Marble (1.5 cm)</div>
+            <div class="analogy-object" id="selected-planet-tagline">🌍 Reference Ocean &amp; Biosphere World</div>
             <p class="analogy-desc" id="selected-planet-desc">
-              Our home reference point (1.00×). Liquid oceans cover 71% of its surface under a thin, protective nitrogen-oxygen atmosphere.
+              Our home reference point (1.00×). Liquid oceans cover 71% of its surface under a dynamic nitrogen-oxygen atmosphere.
             </p>
+            <ul class="planet-facts-list" id="selected-planet-facts"></ul>
             <div class="stats-grid">
               <div class="stat-box">
                 <span class="stat-label">Real Diameter</span>
@@ -265,6 +251,6 @@
       </div>
     </div>
 
-    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/main.js?v=11"></script>
   </body>
 </html>

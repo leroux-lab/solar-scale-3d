@@ -18,12 +18,13 @@ export const BODIES = [
     gravityG: 0.029,
     distFromSunMillionKm: 413.7,
     lightTime: '23.0 mins',
-    metaphors: {
-      marble: '🏖️ Coarse Grain of Sand (0.11 cm / 1.1 mm)',
-      tennis: '🌱 Coriander Seed / BB (0.5 cm)',
-      basketball: '🍒 Small Cherry (1.8 cm)',
-    },
-    desc: 'The largest object in the Asteroid Belt between Mars and Jupiter. Over 2,400 Ceres spheres would fit inside a single Earth!',
+    tagline: '🪨 Asteroid Belt Dwarf Planet',
+    desc: 'The largest object in the Asteroid Belt between Mars and Jupiter, accounting for nearly a third of the belt’s total mass.',
+    facts: [
+      '✨ Bright mysterious spots inside Occator Crater are domes of sodium carbonate salts left by cryo-volcanic brine.',
+      '💧 Contains more fresh water (locked in a subsurface ice mantle) than all the fresh water on Earth.',
+      '⚖️ Over 2,400 Ceres spheres would fit inside the volume of a single Earth.',
+    ],
   },
   {
     id: 'pluto',
@@ -38,12 +39,13 @@ export const BODIES = [
     gravityG: 0.063,
     distFromSunMillionKm: 5906.4,
     lightTime: '5 hrs 28 mins',
-    metaphors: {
-      marble: '🌾 Sesame Seed / Pinhead (0.28 cm)',
-      tennis: '🫛 Small Chickpea (1.25 cm)',
-      basketball: '⛳ Golf Ball (4.5 cm)',
-    },
-    desc: 'Famous for its heart-shaped nitrogen glacier (Tombaugh Regio). Pluto is smaller than Earth’s Moon (156 Plutos fit inside Earth).',
+    tagline: '❄️ Kuiper Belt Ice Dwarf',
+    desc: 'Famous for its heart-shaped nitrogen glacier (Tombaugh Regio). Pluto is narrower than the United States and smaller than Earth’s Moon.',
+    facts: [
+      '🏔️ Floating mountain ranges made of solid water-ice rise 3,500 meters above frozen nitrogen plains.',
+      '🔄 Locks in a binary dance with its giant moon Charon—both always show the same face to each other.',
+      '⏳ One Plutonian year takes 248 Earth years; it hasn’t completed a full orbit since its discovery in 1930.',
+    ],
   },
   {
     id: 'moon',
@@ -57,12 +59,13 @@ export const BODIES = [
     gravityG: 0.165,
     distFromSunMillionKm: 149.9,
     lightTime: '1.3 sec from Earth',
-    metaphors: {
-      marble: '🌱 Mustard Seed / BB Pellet (0.41 cm)',
-      tennis: '🍒 Small Cherry / Grape (1.8 cm)',
-      basketball: '🎾 Tennis Ball (6.5 cm)',
-    },
-    desc: 'Roughly 1/4 the width of Earth. It takes 50 Moons to match Earth’s volume—yet every planet in the Solar System could fit end-to-end in the gap between Earth and the Moon!',
+    tagline: '🌕 Earth’s Natural Satellite',
+    desc: 'Roughly 1/4 the width of Earth. It takes 50 Moons to match Earth’s volume—yet its gravity drives our ocean tides and stabilizes Earth’s tilt.',
+    facts: [
+      '🪐 Every planet in the Solar System could fit end-to-end inside the 384,400 km average gap between Earth and the Moon.',
+      '👣 With no wind or liquid water erosion, Apollo astronaut footprints can last for millions of years.',
+      '📏 Drifts away from Earth by about 3.8 cm per year due to tidal momentum transfer.',
+    ],
   },
   {
     id: 'mercury',
@@ -76,12 +79,13 @@ export const BODIES = [
     gravityG: 0.38,
     distFromSunMillionKm: 57.9,
     lightTime: '3.2 mins',
-    metaphors: {
-      marble: '🌶️ Black Peppercorn (0.57 cm)',
-      tennis: '🫐 Large Blueberry (2.5 cm)',
-      basketball: '⚾ Baseball (9.2 cm)',
-    },
-    desc: 'The smallest major planet—only slightly larger than Earth’s Moon, with an iron-rich core that gives it Mars-like surface gravity (0.38g).',
+    tagline: '☄️ Iron-Core Inner World',
+    desc: 'The smallest major planet—only slightly larger than Earth’s Moon, but packed with an enormous metallic core that gives it Mars-like gravity (0.38g).',
+    facts: [
+      '🌡️ Experiences the most extreme temperature swings in the Solar System: 430°C (800°F) by day to -180°C (-290°F) at night.',
+      '🧲 Its metallic core makes up ~85% of the planet’s radius, generating a global magnetic field.',
+      '☀️ One solar day on Mercury (sunrise to sunrise) lasts 176 Earth days—twice as long as its 88-day year!',
+    ],
   },
   {
     id: 'mars',
@@ -96,12 +100,13 @@ export const BODIES = [
     gravityG: 0.38,
     distFromSunMillionKm: 227.9,
     lightTime: '12.7 mins',
-    metaphors: {
-      marble: '🟢 Green Garden Pea (0.8 cm)',
-      tennis: '🏓 Ping-Pong Ball (3.6 cm)',
-      basketball: '🍈 Cantaloupe Melon (12.8 cm)',
-    },
-    desc: 'Many people imagine Mars is nearly as big as Earth, but it is barely half Earth’s width and only 15% of Earth’s volume!',
+    tagline: '🔴 The Red Terrestrial Planet',
+    desc: 'Barely half Earth’s width and only 15% of Earth’s volume, yet home to the tallest volcano and longest canyon in the Solar System.',
+    facts: [
+      '🌋 Olympus Mons towers 21.9 km high—nearly three times the elevation of Mount Everest.',
+      '🏜️ Valles Marineris stretches over 4,000 km long and 7 km deep—wide enough to span the entire United States.',
+      '🌅 Iron-oxide dust suspended in its thin CO₂ atmosphere makes Martian skies butterscotch by day and blue at sunset.',
+    ],
   },
   {
     id: 'venus',
@@ -116,12 +121,13 @@ export const BODIES = [
     gravityG: 0.9,
     distFromSunMillionKm: 108.2,
     lightTime: '6.0 mins',
-    metaphors: {
-      marble: '🔮 Slightly Smaller Marble (1.4 cm)',
-      tennis: '🎾 Almost a Tennis Ball (6.4 cm)',
-      basketball: '⚽ Soccer Ball (22.8 cm)',
-    },
-    desc: 'Often called Earth’s twin because its size is 95% identical to Earth, though wrapped in a crushing sulfuric acid greenhouse atmosphere.',
+    tagline: '💛 Super-Greenhouse Terrestrial Twin',
+    desc: 'Often called Earth’s twin because its diameter is 95% identical to Earth, though wrapped in a crushing sulfuric acid cloud deck.',
+    facts: [
+      '🔥 Hottest planetary surface in the Solar System at 475°C (900°F)—hot enough to melt lead, even hotter than Mercury.',
+      '🔄 Rotates backwards (retrograde) so slowly that a sidereal day on Venus (243 Earth days) is longer than its year (225 days).',
+      '🎈 Surface atmospheric pressure is 92× Earth’s—equivalent to being 900 meters underwater.',
+    ],
   },
   {
     id: 'earth',
@@ -136,12 +142,13 @@ export const BODIES = [
     gravityG: 1.0,
     distFromSunMillionKm: 149.6,
     lightTime: '8.3 mins',
-    metaphors: {
-      marble: '🔮 Standard Glass Marble (1.5 cm)',
-      tennis: '🎾 Standard Tennis Ball (6.7 cm)',
-      basketball: '🏀 Regulation Basketball (24.0 cm)',
-    },
-    desc: 'Our home reference point (1.00×). Liquid oceans cover 71% of its surface under a thin, protective nitrogen-oxygen atmosphere.',
+    tagline: '🌍 Reference Ocean & Biosphere World',
+    desc: 'Our home reference point (1.00×). Liquid oceans cover 71% of its surface under a dynamic nitrogen-oxygen atmosphere.',
+    facts: [
+      '🧲 A churning liquid-iron outer core generates the magnetosphere that shields surface life from solar wind radiation.',
+      '🪨 The densest planet in the Solar System (5.51 g/cm³) and the only world known to have active plate tectonics.',
+      '🌊 Although oceans reach 11 km deep, all of Earth’s water rolled into a sphere would only be 1,385 km wide.',
+    ],
   },
   {
     id: 'kepler22b',
@@ -156,12 +163,13 @@ export const BODIES = [
     gravityG: 2.06,
     distFromSunMillionKm: null,
     lightTime: '635 Light-Years away',
-    metaphors: {
-      marble: '🌰 Whole Walnut / Bouncy Ball (3.15 cm)',
-      tennis: '🍊 Large Grapefruit (14.1 cm)',
-      basketball: '🏖️ 20-inch Beach Ball (50.4 cm)',
-    },
-    desc: 'A famous "Super-Earth" / "Ocean World" exoplanet orbiting in the habitable zone of a Sun-like star 635 light-years away. Twice Earth’s width, holding over 9 Earths in volume!',
+    tagline: '🌊 Habitable-Zone Super-Earth Exoplanet',
+    desc: 'A famous "Super-Earth" / "Sub-Neptune" exoplanet orbiting in the habitable zone of a Sun-like star 635 light-years away.',
+    facts: [
+      '🔭 First planet confirmed by NASA’s Kepler Space Telescope inside the liquid-water habitable zone of a Sun-like star.',
+      '🗓️ Completes an orbit around its host star Kepler-22 in 290 days—remarkably close to an Earth year.',
+      '🌐 At 2.1× Earth’s diameter, it bridges the mysterious gap between rocky terrestrial worlds and ice giants.',
+    ],
   },
   {
     id: 'neptune',
@@ -176,12 +184,13 @@ export const BODIES = [
     gravityG: 1.14,
     distFromSunMillionKm: 4495.0,
     lightTime: '4 hrs 10 mins',
-    metaphors: {
-      marble: '🍋 Large Lemon / Plum (5.8 cm)',
-      tennis: '⚽ Soccer Ball (25.9 cm)',
-      basketball: '🎈 3-foot Weather Balloon (92.6 cm)',
-    },
-    desc: 'An ice giant 4.5 billion km from the Sun. Sunlight takes over 4 hours just to reach its supersonic blue methane clouds.',
+    tagline: '🔵 Supersonic Outer Ice Giant',
+    desc: 'The outermost major planet at 4.5 billion km from the Sun. Sunlight takes over 4 hours to reach its deep azure methane clouds.',
+    facts: [
+      '💨 Drives the fastest sustained winds in the Solar System, screaming across the equator at over 2,100 km/h (1,300 mph).',
+      '🧮 The first planet discovered via mathematical prediction (1846) before it was ever knowingly seen through a telescope.',
+      '🧊 Its giant moon Triton orbits backwards and erupts nitrogen-ice geysers 8 km high.',
+    ],
   },
   {
     id: 'uranus',
@@ -196,12 +205,13 @@ export const BODIES = [
     gravityG: 0.89,
     distFromSunMillionKm: 2871.0,
     lightTime: '2 hrs 40 mins',
-    metaphors: {
-      marble: '🍑 Peach / Baseball (6.0 cm)',
-      tennis: '🏀 Basketball (26.7 cm)',
-      basketball: '🛞 3.1-foot Monster Truck Tire (95.5 cm)',
-    },
-    desc: 'An ice giant nearly 4 times wider than Earth (63 Earths fit inside). It orbits tipped completely on its side at a 98° tilt.',
+    tagline: '🧊 Sideways-Tilted Ice Giant',
+    desc: 'An ice giant nearly 4 times wider than Earth (63 Earths fit inside), composed of water, methane, and ammonia ices above a rocky core.',
+    facts: [
+      '📐 Tipped completely on its side at a 97.8° axial tilt—rolling around the Sun with extreme 42-year-long polar summers and winters.',
+      '🥶 Holds the coldest planetary atmosphere record in the Solar System at -224°C (-371°F).',
+      '⚖️ Despite being 14.5× more massive than Earth, its low density leaves surface gravity slightly weaker than Earth’s (0.89g).',
+    ],
   },
   {
     id: 'saturn',
@@ -216,12 +226,13 @@ export const BODIES = [
     gravityG: 1.06,
     distFromSunMillionKm: 1434.0,
     lightTime: '1 hr 19 mins',
-    metaphors: {
-      marble: '🍊 Big Navel Orange + Dinner-Plate Rings (13.7 cm)',
-      tennis: '🪑 2-foot Beanbag Chair (61.2 cm)',
-      basketball: '🚗 7.2-foot SUV-tall Sphere (2.19 m)',
-    },
-    desc: '764 Earths fit inside Saturn, and its icy rings span 282,000 km—wide enough to line up 22 Earths from edge to edge!',
+    tagline: '🪐 Ringed Gas Giant',
+    desc: '764 Earths fit inside Saturn, and its brilliant icy rings span 282,000 km—wide enough to line up 22 Earths from edge to edge.',
+    facts: [
+      '💍 While Saturn’s main rings span nearly 300,000 km across, they are razor-thin—averaging only 10 meters thick!',
+      '🛁 Has the lowest density of any planet (0.687 g/cm³)—about 30% less dense than liquid water.',
+      '⬡ A persistent six-sided hexagonal jet stream wider than two Earths swirls continuously around Saturn’s north pole.',
+    ],
   },
   {
     id: 'jupiter',
@@ -236,12 +247,13 @@ export const BODIES = [
     gravityG: 2.53,
     distFromSunMillionKm: 778.5,
     lightTime: '43.2 mins',
-    metaphors: {
-      marble: '🍊 Large Grapefruit (16.5 cm)',
-      tennis: '🏖️ 2.4-foot Exercise Ball (73.5 cm)',
-      basketball: '🚐 8.6-foot Minivan-tall Sphere (2.63 m)',
-    },
-    desc: 'More than twice as massive as all other Solar System planets combined! Its Great Red Spot storm alone is wider than the entire Earth.',
+    tagline: '🟠 King of the Gas Giants',
+    desc: 'More than twice as massive as all other Solar System planets combined (318× Earth mass), holding 1,321 Earths by volume.',
+    facts: [
+      '🌪️ The Great Red Spot is a high-pressure anticyclone that has raged for over 300 years and is wider than the entire Earth.',
+      '⚡ Spins faster than any other planet, completing a full rotation in under 10 hours and bulging visibly at the equator.',
+      '🛰️ Commands a miniature solar system of 95+ moons, including Ganymede—a moon larger than the planet Mercury.',
+    ],
   },
   {
     id: 'wasp17b',
@@ -256,12 +268,13 @@ export const BODIES = [
     gravityG: 0.32,
     distFromSunMillionKm: null,
     lightTime: '1,300 Light-Years away',
-    metaphors: {
-      marble: '🏖️ 13-inch Beach Ball (32.8 cm)',
-      tennis: '🛋️ 4.8-foot Giant Loveseat Sphere (1.46 m)',
-      basketball: '🏠 17.2-foot Two-Story House Sphere (5.24 m)',
-    },
-    desc: 'One of the largest known exoplanets! A bloated "Puffy Hot Jupiter" nearly TWICE the diameter of Jupiter (21.8 Earths wide) with ultra-low density.',
+    tagline: '🟣 Ultra-Puffy Hot-Jupiter Exoplanet',
+    desc: 'One of the largest known exoplanets! Nearly twice the diameter of Jupiter (21.8 Earths wide), holding over 10,400 Earths in volume.',
+    facts: [
+      '🎈 Despite having 7.8× Jupiter’s volume, it has less than half Jupiter’s mass—giving it a foam-like average density.',
+      '🔄 First exoplanet ever discovered in a retrograde orbit, revolving backwards against the spin of its host star.',
+      '☀️ Skims so close to its star that it completes a full year in just 3.7 Earth days at temperatures over 1,500°C.',
+    ],
   },
   {
     id: 'sun',
@@ -276,12 +289,13 @@ export const BODIES = [
     gravityG: 27.9,
     distFromSunMillionKm: 0,
     lightTime: '0 sec (Origin)',
-    metaphors: {
-      marble: '🏖️ 5.4-foot Giant Beach Ball (164 cm)',
-      tennis: '🏠 24-foot Two-Story House Sphere (7.3 m)',
-      basketball: '🏢 86-foot 8-Story Building Sphere (26.2 m)',
-    },
-    desc: 'Our G-type star. Over 109 Earths fit side-by-side across its face, and 1.3 million Earths fit inside—yet it is a tiny dwarf compared to Betelgeuse and UY Scuti!',
+    tagline: '☀️ G2V Main-Sequence Yellow Dwarf Star',
+    desc: 'Contains 99.86% of all mass in the Solar System. Over 109 Earths fit side-by-side across its face, and 1.3 million Earths fit inside.',
+    facts: [
+      '⚛️ Fuses 600 million tons of hydrogen into helium every second inside its 15-million-°C core.',
+      '🏋️ Surface gravity is 27.9g—a 150-lb person on Earth would weigh over 4,180 lbs at the solar photosphere.',
+      '🌟 Though colossal next to planets, the Sun is a compact dwarf compared to evolved red supergiants like Betelgeuse.',
+    ],
   },
   {
     id: 'betelgeuse',
@@ -296,12 +310,13 @@ export const BODIES = [
     gravityG: 0.0003,
     distFromSunMillionKm: 0,
     lightTime: '59.1 mins across diameter',
-    metaphors: {
-      marble: '🏙️ 0.78-Mile Wide Sphere (1.25 km — 3× Empire State Bldg!)',
-      tennis: '🏔️ 3.5-Mile Wide Mountain Sphere (5.6 km — taller than Mt. Blanc!)',
-      basketball: '🌆 12.4-Mile Wide Mega-City Sphere (20.0 km — spans Manhattan!)',
-    },
-    desc: 'Red Supergiant in Orion (763× wider than our Sun!). Over 444 MILLION Suns (or 580 trillion Earths) fit inside! Placed at our Sun, its surface swallows Mercury, Venus, Earth, Mars, and Ceres!',
+    tagline: '🔥 Red Supergiant in Orion (α Orionis)',
+    desc: 'Roughly 763× wider than our Sun! Over 444 million Suns (or 580 trillion Earths) fit inside its boiling convective envelope.',
+    facts: [
+      '🪐 Placed at the center of our Solar System, its surface would engulf Mercury, Venus, Earth, Mars, and the Asteroid Belt.',
+      '🫧 Giant convection cells as wide as Earth’s entire orbit bubble up to its surface, causing dramatic brightness dimming.',
+      '💥 Near the end of its stellar life—expected to explode as a brilliant Type II supernova within the next 100,000 years.',
+    ],
   },
   {
     id: 'uyscuti',
@@ -316,12 +331,13 @@ export const BODIES = [
     gravityG: 0.00005,
     distFromSunMillionKm: 0,
     lightTime: '2 hrs 12 mins across diameter',
-    metaphors: {
-      marble: '🌉 1.74-Mile Wide Sphere (2.8 km — wider than Golden Gate Bridge!)',
-      tennis: '🏔️ 7.8-Mile Wide Sphere (12.5 km — 1.4× taller than Mt. Everest!)',
-      basketball: '🌎 27.8-Mile Wide Asteroid-Sized Sphere (44.8 km across!)',
-    },
-    desc: 'Colossal Red Hypergiant (1,706× wider than our Sun!). Nearly 5 BILLION Suns (or 6.5 quadrillion Earths) fit inside! Placed at our Sun, it swallows Jupiter and reaches nearly to Saturn’s orbit!',
+    tagline: '🌟 Extreme Red Hypergiant Star',
+    desc: 'One of the largest known stars—1,706× wider than our Sun (~2.38 billion km across), holding nearly 5 billion Suns by volume!',
+    facts: [
+      '🪐 Placed at our Sun, its outer photosphere would swallow Jupiter’s orbit and reach nearly to Saturn.',
+      '⚡ A beam of light traveling at 300,000 km/s takes over 7 hours just to circle UY Scuti’s equator once (vs. 14.5 seconds for the Sun).',
+      '🌫️ Its outer atmosphere is an ultra-diffuse vacuum millions of times less dense than air at sea level.',
+    ],
   },
 ];
 

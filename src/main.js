@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { BODIES, createPlanetMaps, createSaturnRingTexture } from './planetsData.js';
+import { BODIES, createPlanetMaps, createSaturnRingTexture } from './planetsData.js?v=11';
 
 // ============================================================================
 // 1. Scene, Camera, Renderer & Controls
@@ -318,19 +318,11 @@ const compareGroup = new THREE.Group();
 scene.add(lineupGroup);
 scene.add(compareGroup);
 
-const METAPHOR_EARTH_CM = {
-  marble: 1.5,
-  tennis: 6.7,
-  basketball: 24.0,
-};
-
 const state = {
   mode: 'lineup', // 'lineup' | 'compare'
   lineupTier: 'planetary', // 'planetary' | 'stellar'
-  metaphor: 'marble', // 'marble' | 'tennis' | 'basketball'
   selectedBodyId: 'earth',
   showSunInLineup: true,
-  showScaleRuler: true,
   compareAId: 'earth',
   compareBId: 'jupiter',
   compareView: 'side', // 'side' | 'concentric' | 'volume'
@@ -339,81 +331,17 @@ const state = {
 };
 
 // ============================================================================
-// 4. MODE 1: Everyday Object Scale (Planetary Stage & Stellar Titan Stage)
+// 4. MODE 1: True Scale Lineup (Planetary Stage & Stellar Titan Stage)
 // ============================================================================
 let lineupMeshes = {};
 let sunLineupMesh = null;
-let rulerGroup = null;
-
-function buildScaleRuler() {
-  if (rulerGroup) {
-    lineupGroup.remove(rulerGroup);
-    rulerGroup = null;
-  }
-  if (state.lineupTier !== 'planetary' || !state.showScaleRuler) return;
-
-  rulerGroup = new THREE.Group();
-  // 1 Earth diameter = 2.0 3D units = METAPHOR_EARTH_CM[state.metaphor] cm
-  const earthDiamCm = METAPHOR_EARTH_CM[state.metaphor];
-  const unitsPerCm = 2.0 / earthDiamCm;
-
-  const tickMat = new THREE.LineBasicMaterial({
-    color: 0x38bdf8,
-    transparent: true,
-    opacity: 0.45,
-  });
-
-  // Floor baseline at z = 6
-  const startX = -26;
-  const endX = 115;
-  const y = -22.8;
-  const z = 7;
-
-  const baseLine = new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(startX, y, z),
-      new THREE.Vector3(endX, y, z),
-    ]),
-    tickMat
-  );
-  rulerGroup.add(baseLine);
-
-  const markersCm =
-    state.metaphor === 'marble'
-      ? [10, 25, 50, 75]
-      : state.metaphor === 'tennis'
-      ? [50, 100, 200, 300]
-      : [100, 300, 600, 1000];
-
-  markersCm.forEach((cm) => {
-    const x = startX + cm * unitsPerCm;
-    if (x > endX) return;
-    const tick = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(x, y, z - 1.5),
-        new THREE.Vector3(x, y, z + 1.5),
-      ]),
-      tickMat
-    );
-    rulerGroup.add(tick);
-    const labelText = cm >= 100 ? `${(cm / 100).toFixed(1)} m` : `${cm} cm`;
-    const sprite = createLabelSprite(labelText, 'Scale Ruler', '#7dd3fc', 3.6);
-    sprite.position.set(x, y + 1.8, z + 1.5);
-    rulerGroup.add(sprite);
-  });
-
-  lineupGroup.add(rulerGroup);
-}
 
 function buildLineupScene() {
   lineupGroup.clear();
   lineupMeshes = {};
   sunLineupMesh = null;
-  rulerGroup = null;
 
   document.getElementById('sun-toggle-row').style.display =
-    state.lineupTier === 'planetary' ? 'block' : 'none';
-  document.getElementById('ruler-toggle-row').style.display =
     state.lineupTier === 'planetary' ? 'block' : 'none';
 
   if (state.lineupTier === 'planetary') {
@@ -492,8 +420,6 @@ function buildLineupScene() {
       r: 28,
       body: sunBody,
     };
-
-    buildScaleRuler();
   } else {
     const scaleFactor = 0.05 / 109.3;
     const grid = new THREE.GridHelper(420, 70, 0x7c2d12, 0x1e1b4b);
@@ -585,8 +511,12 @@ function selectBodyInLineup(id, fly = true) {
 
   const areaRatio = body.earthRatio * body.earthRatio;
   document.getElementById('selected-planet-name').textContent = body.name;
-  document.getElementById('selected-planet-object').textContent = body.metaphors[state.metaphor];
+  document.getElementById('selected-planet-tagline').textContent = body.tagline || '';
   document.getElementById('selected-planet-desc').textContent = body.desc;
+  const factsEl = document.getElementById('selected-planet-facts');
+  if (factsEl) {
+    factsEl.innerHTML = (body.facts || []).map((f) => `<li>${f}</li>`).join('');
+  }
   document.getElementById('stat-diameter').textContent = `${body.diameterKm.toLocaleString()} km`;
   document.getElementById('stat-ratio').textContent =
     body.earthRatio >= 1000
@@ -1006,25 +936,9 @@ document.querySelectorAll('#arena-segmented .seg-btn').forEach((btn) => {
   });
 });
 
-document.querySelectorAll('#metaphor-segmented .seg-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    state.metaphor = btn.dataset.metaphor;
-    document.querySelectorAll('#metaphor-segmented .seg-btn').forEach((b) => {
-      b.classList.toggle('active', b.dataset.metaphor === state.metaphor);
-    });
-    buildScaleRuler();
-    selectBodyInLineup(state.selectedBodyId, false);
-  });
-});
-
 document.getElementById('toggle-sun-lineup').addEventListener('change', (e) => {
   state.showSunInLineup = e.target.checked;
   if (sunLineupMesh) sunLineupMesh.visible = state.showSunInLineup;
-});
-
-document.getElementById('toggle-scale-ruler').addEventListener('change', (e) => {
-  state.showScaleRuler = e.target.checked;
-  buildScaleRuler();
 });
 
 // Mode 2 listeners
@@ -1136,7 +1050,6 @@ async function handleExportJson() {
     app: 'Solar Scale 3D',
     timestamp: new Date().toISOString(),
     activeMode: state.mode,
-    referenceMetaphor: state.metaphor,
     selectedBody: selected,
     comparison: {
       worldA: state.compareAId,
@@ -1335,24 +1248,24 @@ const TUTORIAL_STEPS = [
   },
   {
     badge: 'MODE 1 • STEP 2 OF 4',
-    title: 'Everyday Object Scale',
-    desc: 'Make astronomical diameters intuitive by shrinking Earth down to a Glass Marble, Tennis Ball, or Basketball—with a live 3D scale ruler.',
+    title: 'True 1:1 Scale Lineup & Facts',
+    desc: 'Compare dwarf planets, rocky worlds, gas giants, exoplanets, and hypergiant stars at true relative diameter—with key astronomical facts for every body.',
     visualSvg: `
       <svg viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
         <line x1="28" y1="74" x2="332" y2="74" stroke="#38bdf8" stroke-opacity="0.45" stroke-width="1.5"/>
         <circle cx="66" cy="56" r="7" fill="#38bdf8" stroke="#bae6fd" stroke-width="1.2"/>
         <text x="66" y="38" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Earth</text>
-        <text x="66" y="88" text-anchor="middle" fill="#7dd3fc" font-size="9" font-family="system-ui,sans-serif">Marble 1.5 cm</text>
+        <text x="66" y="88" text-anchor="middle" fill="#7dd3fc" font-size="9" font-family="system-ui,sans-serif">12,742 km (1×)</text>
         <circle cx="174" cy="46" r="20" fill="#fb923c" stroke="#fed7aa" stroke-width="1.5"/>
-        <text x="174" y="19" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Jupiter (11×)</text>
-        <text x="174" y="88" text-anchor="middle" fill="#fdba74" font-size="9" font-family="system-ui,sans-serif">Grapefruit 16.5 cm</text>
+        <text x="174" y="19" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Jupiter</text>
+        <text x="174" y="88" text-anchor="middle" fill="#fdba74" font-size="9" font-family="system-ui,sans-serif">11.0× Earth • 2.53g</text>
         <circle cx="300" cy="48" r="28" fill="#f59e0b" fill-opacity="0.85" stroke="#fef08a" stroke-width="1.5"/>
-        <text x="300" y="14" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Sun (109×)</text>
-        <text x="300" y="88" text-anchor="middle" fill="#fde047" font-size="9" font-family="system-ui,sans-serif">5.4 ft Beach Ball</text>
+        <text x="300" y="14" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="700" font-family="system-ui,sans-serif">The Sun</text>
+        <text x="300" y="88" text-anchor="middle" fill="#fde047" font-size="9" font-family="system-ui,sans-serif">109.3× Earth • 27.9g</text>
       </svg>`,
     tips: [
       '🪐 Switch between Planetary Stage and 🌟 Stellar Titans (Betelgeuse & UY Scuti).',
-      '📏 Toggle the Everyday Scale Ruler on the floor grid for physical perspective.',
+      '📖 Read curated scientific facts, real diameter, surface area, and surface gravity (g).',
     ],
     nextLabel: 'Next: Comparisons →',
     highlightSelector: '#tab-lineup',
